@@ -4,10 +4,12 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-19 17:13:32
+Last modified: 2016-07-19 18:20:19
 GCC version: 4.9.3
 */
 
+//this program is inspired by another git program DeepLearning
+//
 #include <iostream>
 #include <stdlib.h>
 #include <cmath>
@@ -44,7 +46,7 @@ void LogisticRegression::train(vector<int> x, vector<int> y, double rate) {
     for(int i = 0; i < out_dim; ++i) {
         for(int j = 0; j < in_dim; ++j)
             p_y_given_x[i] += weight[i][j] * x[j];
-        p_y_given_x[i] == bias[i];
+        p_y_given_x[i] += bias[i];
     }
 
     softmax(p_y_given_x);
@@ -64,6 +66,9 @@ void LogisticRegression::test(vector<int> x, vector<double> y) {
         y[i] += bias[i];
     }
     softmax(y);
+    for(int j = 0; j < y.size(); ++j)
+        cout << y[j] << " ";
+    cout << endl;
 }
 
 int main() {
@@ -100,17 +105,16 @@ int main() {
         for(int i = 0; i < train_N; ++i)
             lr.train(train_X[i],  train_Y[i], learning_rate);
 
-    vector<int> test_X = {
+    vector<vector<int>> test_X = {
         {1, 0, 1, 0, 0, 0},
+        {1, 1, 1, 0, 0, 0},
+        {0, 0, 1, 1, 1, 0}
     };
 
-    vector<double> test_Y(2);
-
-        lr.test(test_X, test_Y);
-        for(int j=0; j<n_out; j++) {
-          cout << test_Y[j] << " ";
-        }
-        cout << endl;
+    vector<vector<double>> test_Y(3, vector<double>(2, 0));
+    for(int i = 0; i < test_Y.size(); ++i) {
+        lr.test(test_X[i], test_Y[i]);
+    }
     return 0;
 }
 
