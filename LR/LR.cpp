@@ -4,7 +4,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-19 18:20:19
+Last modified: 2016-07-19 19:04:34
 GCC version: 4.9.3
 */
 
@@ -30,12 +30,9 @@ LogisticRegression::LogisticRegression(int dataSize, int in_d, int out_d) {
 
 LogisticRegression::~LogisticRegression() {}
 
-void LogisticRegression::softmax(vector<double>& vec) {
-    double sum = 0;
-    for(auto d: vec)
-        sum += exp(d);
-    for(int i = 0; i < vec.size(); i++)
-        vec[i] = exp(vec[i]) / sum;
+void LogisticRegression::sigmoid(vector<double>& vec) {
+    for(int i = 0; i < vec.size(); ++i)
+        vec[i] = 1.0 / (1 + exp(-1 * vec[i]));
 }
 
 void LogisticRegression::train(vector<int> x, vector<int> y, double rate) {
@@ -49,7 +46,7 @@ void LogisticRegression::train(vector<int> x, vector<int> y, double rate) {
         p_y_given_x[i] += bias[i];
     }
 
-    softmax(p_y_given_x);
+    sigmoid(p_y_given_x);
     for(int i = 0; i < out_dim; ++i) {
         diff[i] = y[i] - p_y_given_x[i];
         for(int j = 0; j < in_dim; ++j)
@@ -65,7 +62,7 @@ void LogisticRegression::test(vector<int> x, vector<double> y) {
             y[i] += weight[i][j] * x[j];
         y[i] += bias[i];
     }
-    softmax(y);
+    sigmoid(y);
     for(int j = 0; j < y.size(); ++j)
         cout << y[j] << " ";
     cout << endl;
@@ -74,7 +71,7 @@ void LogisticRegression::test(vector<int> x, vector<double> y) {
 int main() {
     srand(0);
     double learning_rate = 0.1;
-    int n_epochs = 500;
+    int n_epochs = 1000;
 
     int train_N = 6;
     int test_N = 2;

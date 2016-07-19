@@ -24,7 +24,7 @@ public:
     LogisticRegression(int, int, int);
     ~LogisticRegression();
     void train(vector<int>, vector<int>, double);
-    void softmax(vector<double>&);
+    void sigmoid(vector<double>&);
     void test(vector<int>, vector<double>);
 };
 
