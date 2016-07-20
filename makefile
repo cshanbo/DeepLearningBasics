@@ -3,11 +3,15 @@ CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.
 INC_DIR = include
 SRC_DIR = MLP
 OBJ_DIR = obj
+BIN_DIR = bin
+UTIL_DIR = utils
 
-test: $(OBJ_DIR)/HiddenLayer.o
-	$(CXX) $(CXXFLAGS) -o test $(OBJ_DIR)/HiddenLayer.o
+$(BIN_DIR)/test: $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/utils.o
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/test $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/utils.o
 $(OBJ_DIR)/HiddenLayer.o: $(SRC_DIR)/HiddenLayer.cpp $(INC_DIR)/HiddenLayer.h $(INC_DIR)/utils.h
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/HiddenLayer.cpp -o $(OBJ_DIR)/HiddenLayer.o
+$(OBJ_DIR)/utils.o: $(UTIL_DIR)/utils.cpp $(INC_DIR)/utils.h
+	$(CXX) $(CXXFLAGS) -c $(UTIL_DIR)/utils.cpp -o $(OBJ_DIR)/utils.o
 clean:
-	rm -rf *.o
-	rm test
+	rm -rf $(OBJ_DIR)/*
+	rm $(BIN_DIR)/*

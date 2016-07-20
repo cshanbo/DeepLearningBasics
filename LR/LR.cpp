@@ -4,7 +4,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-19 19:04:34
+Last modified: 2016-07-20 13:11:45
 GCC version: 4.9.3
 */
 
@@ -14,7 +14,7 @@ GCC version: 4.9.3
 #include <stdlib.h>
 #include <cmath>
 #include <algorithm>
-#include "LR.h"
+#include "../include/LR.h"
 #include <vector>
 using namespace std;
 

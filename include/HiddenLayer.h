@@ -17,15 +17,17 @@ GCC version: 4.7.3
 using namespace std;
 
 class HiddenLayer {
+public:
     int n_in;       //dimension of input
     int n_out;	    //dimension of output
     vector<vector<double>> weights;     //a double matrix
     vector<double> bias;                //a double vector
     vector<vector<double>> input;       //a double matrix
-public:
-    void activation(vector<double>&, string);
-    HiddenLayer(int, int, vector<vector<double>>);
+    void activation(vector<double>&, int);
+    void activation(vector<vector<double>>&, int);
+    HiddenLayer(int, int, vector<vector<double>>, int);
     ~HiddenLayer();
 };
 
 #endif
+

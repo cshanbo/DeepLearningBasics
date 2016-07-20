@@ -7,11 +7,9 @@ Date: 2016-07-20 09:30:37
 Last modified: 2016-07-20 09:30:37
 GCC version: 4.7.3
 */
-#include <iostream>
-#include <cstdlib>
+#include <vector>
 using namespace std;
 
-double randRange(double fMin,  double fMax) {
-    double f = (double)rand() / RAND_MAX;
-    return fMin + f * (fMax - fMin);
-}
+double randRange(double, double);
+
+vector<vector<double>> dot(vector<vector<double>>&, vector<vector<double>>&, vector<double> = vector<double>{});
