@@ -26,6 +26,8 @@ public:
     MLP();
     MLP(int, int, int, vector<vector<double>>); //n_in, n_out, n_hidden
     ~MLP();
+    double L1(vector<vector<double>>&, vector<vector<double>>&);
+    double L2(vector<vector<double>>&, vector<vector<double>>&);
 };
 
 #endif

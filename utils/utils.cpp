@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-20 13:32:19
+Last modified: 2016-07-20 16:17:26
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -36,7 +36,7 @@ vector<vector<double>> dot(vector<vector<double>>& input, vector<vector<double>>
     return ret;
 }
 
-void print(vector<vector<double>> vec) {
+void print(vector<vector<double>>& vec) {
     for(auto v: vec) {
         for(auto d: v)
           cout << d << " "; 

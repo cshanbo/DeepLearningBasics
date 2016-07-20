@@ -15,18 +15,20 @@ GCC version: 4.7.3
 using namespace std;
 
 class LogisticRegression {
-    int N;
     int in_dim;
     int out_dim;
     vector<vector<double>> weight;
+    vector<vector<double>> input;
     vector<double> bias;
+
 public:
     LogisticRegression();
-    LogisticRegression(int, int, int);
+    LogisticRegression(vector<vector<double>>, int, int);
     ~LogisticRegression();
     void train(vector<int>, vector<int>, double);
     void sigmoid(vector<double>&);
     void test(vector<int>, vector<double>);
+    double negativeLogLikelihood();
 };
 
 #endif

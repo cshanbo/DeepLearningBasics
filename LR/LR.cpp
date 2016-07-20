@@ -4,7 +4,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-20 15:20:20
+Last modified: 2016-07-20 15:45:21
 GCC version: 4.9.3
 */
 
@@ -20,12 +20,11 @@ using namespace std;
 
 LogisticRegression::LogisticRegression() {}
 
-LogisticRegression::LogisticRegression(int dataSize, int in_d, int out_d) {
+LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, int out_d) {
     //init
-    N = dataSize;
     in_dim = in_d;
     out_dim = out_d;
-
+    this->input = input;
     weight = vector<vector<double>>(out_dim, vector<double>(in_dim, 0));
     bias = vector<double>(out_dim, 0);
 }
@@ -33,7 +32,7 @@ LogisticRegression::LogisticRegression(int dataSize, int in_d, int out_d) {
 LogisticRegression::~LogisticRegression() {}
 
 void LogisticRegression::sigmoid(vector<double>& vec) {
-    for(int i = 0; i < vec.size(); ++i)
+    for(unsigned int i = 0; i < vec.size(); ++i)
         vec[i] = 1.0 / (1 + exp(-1 * vec[i]));
 }
 
@@ -52,8 +51,8 @@ void LogisticRegression::train(vector<int> x, vector<int> y, double rate) {
     for(int i = 0; i < out_dim; ++i) {
         diff[i] = y[i] - p_y_given_x[i];
         for(int j = 0; j < in_dim; ++j)
-            weight[i][j] += rate * diff[i] * x[j] / N;
-        bias[i] += rate * diff[i] / N;
+            weight[i][j] += rate * diff[i] * x[j] / this->input.size();
+        bias[i] += rate * diff[i] / this->input.size();
     }
 }
 
@@ -65,7 +64,7 @@ void LogisticRegression::test(vector<int> x, vector<double> y) {
         y[i] += bias[i];
     }
     sigmoid(y);
-    for(int j = 0; j < y.size(); ++j)
+    for(unsigned int j = 0; j < y.size(); ++j)
         cout << y[j] << " ";
     cout << endl;
 }
