@@ -23,9 +23,11 @@ public:
     vector<vector<double>> weights;     //a double matrix
     vector<double> bias;                //a double vector
     vector<vector<double>> input;       //a double matrix
+    vector<vector<double>> output;     //a double matrix
     void activation(vector<double>&, int);
     void activation(vector<vector<double>>&, int);
-    HiddenLayer(int, int, vector<vector<double>>, int);
+    HiddenLayer();
+    HiddenLayer(int, int, vector<vector<double>>, int);     //n_in, n_out, input, activationType
     ~HiddenLayer();
 };
 

@@ -21,6 +21,7 @@ class LogisticRegression {
     vector<vector<double>> weight;
     vector<double> bias;
 public:
+    LogisticRegression();
     LogisticRegression(int, int, int);
     ~LogisticRegression();
     void train(vector<int>, vector<int>, double);

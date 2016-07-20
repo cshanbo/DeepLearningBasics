@@ -4,7 +4,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-20 13:11:45
+Last modified: 2016-07-20 15:20:20
 GCC version: 4.9.3
 */
 
@@ -17,6 +17,8 @@ GCC version: 4.9.3
 #include "../include/LR.h"
 #include <vector>
 using namespace std;
+
+LogisticRegression::LogisticRegression() {}
 
 LogisticRegression::LogisticRegression(int dataSize, int in_d, int out_d) {
     //init
@@ -67,7 +69,7 @@ void LogisticRegression::test(vector<int> x, vector<double> y) {
         cout << y[j] << " ";
     cout << endl;
 }
-
+/*
 int main() {
     srand(0);
     double learning_rate = 0.1;
@@ -115,3 +117,4 @@ int main() {
     return 0;
 }
 
+*/

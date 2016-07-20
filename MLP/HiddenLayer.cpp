@@ -4,7 +4,7 @@ Program: Hidden Layer.cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 09:27:14
-Last modified: 2016-07-20 13:02:25
+Last modified: 2016-07-20 14:54:44
 GCC version: 4.7.3
 */
 
@@ -19,6 +19,8 @@ GCC version: 4.7.3
 
 using namespace std;
 
+HiddenLayer::HiddenLayer() {}
+
 HiddenLayer::HiddenLayer(int n_in, int n_out, vector<vector<double>> input, int activationType) {
     //Initialization. this kind of initialization for weights has been proved to be good
     this->n_in = n_in;
@@ -29,13 +31,14 @@ HiddenLayer::HiddenLayer(int n_in, int n_out, vector<vector<double>> input, int 
     for(unsigned int i = 0; i < weights.size(); ++i)
         for(unsigned int j = 0; j < weights[0].size(); ++j)
             weights[i][j] = randRange(-1 * sqrt(6.0 / (n_in + n_out)), sqrt(6.0 / (n_in + n_out)));
-    activation(weights, activationType);
+    this->output = dot(input, weights, bias);
+    activation(output, activationType);
 }
 
 HiddenLayer::~HiddenLayer() {}
 
 void HiddenLayer::activation(vector<double>& vec, int s) {
-    //sigmoid is a little special
+    //sigmoid is a little different
     //0: tanh, 1: sigmoid, 2: ReLU
     if(s == 0)
         for(unsigned int i = 0; i < vec.size(); ++i)
@@ -49,7 +52,8 @@ void HiddenLayer::activation(vector<double>& vec, int s) {
 }
 
 void HiddenLayer::activation(vector<vector<double>>& vec, int s) {
-    //sigmoid is a little special
+    //sigmoid is a little different
+    //0: tanh, 1: sigmoid, 2: ReLU
     if(s == 0)
         for(unsigned int i = 0; i < vec.size(); ++i)
             for(unsigned int j = 0; j < vec[0].size(); ++j)
@@ -66,16 +70,11 @@ void HiddenLayer::activation(vector<vector<double>>& vec, int s) {
                 vec[i][j] = vec[i][j] >= 0? vec[i][j]: 0;
 }
 
-int main() {
-    vector<vector<double>> ret;
-    vector<vector<double>> input{{1, 2, 3}, {0, 1, 2}, {3, 3, 5}};
-    vector<vector<double>> matrix{{1, 3}, {0, 1}, {3, 5}};
-    vector<double> bias{0, 1};
-    ret = dot(input, matrix);
-    for(auto v: ret) {
-        for(auto d: v)
-            cout << d << " ";
-        cout << endl;
-    }
-    return 0;
-}
+//int main() {
+//    vector<vector<double>> ret;
+//    vector<vector<double>> input{{1, 2, 3}, {0, 1, 2}, {3, 3, 5}};
+//    vector<vector<double>> matrix{{1, 3}, {0, 1}, {3, 5}};
+//    vector<double> bias{0, 1};
+//    HiddenLayer hidden(3, 2, input, 0);
+//    return 0;
+//}

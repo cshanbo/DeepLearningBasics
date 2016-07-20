@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-20 13:19:22
+Last modified: 2016-07-20 13:32:19
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -34,4 +34,12 @@ vector<vector<double>> dot(vector<vector<double>>& input, vector<vector<double>>
             for(unsigned int j = 0; j < ret[0].size(); j++)
                 ret[i][j] += bias[j];
     return ret;
+}
+
+void print(vector<vector<double>> vec) {
+    for(auto v: vec) {
+        for(auto d: v)
+          cout << d << " "; 
+        cout << endl;
+    }
 }
