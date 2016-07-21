@@ -15,8 +15,12 @@ using namespace std;
 
 double randRange(double, double);
 
-vector<vector<double>> dot(vector<vector<double>>&, vector<vector<double>>&, vector<double> = vector<double>{});
+void dot(vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>>&, vector<double> = vector<double>{});
 
-void print(vector<vector<double>>&);
+void print(vector<vector<double>>);
+
+int maxIndex(vector<double>& vec);
+
+double sigmoid(double x);
 
 #endif
