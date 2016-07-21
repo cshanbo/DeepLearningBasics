@@ -4,7 +4,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-21 16:46:02
+Last modified: 2016-07-21 16:59:40
 GCC version: 4.9.3
 */
 
@@ -85,14 +85,21 @@ void LogisticRegression::update(double rate, vector<int> y) {
             bias[i] += rate * dy / input.size();
         }
     }
+    dot(input, weight, y_given_x, bias);
+    for(unsigned int i = 0; i < y_pred.size(); ++i)
+        y_pred[i] = maxIndex(y_given_x[i]);
 }
 
 
+
 int main() {
-    vector<vector<double>> input{{1, 2, 3}, {0, 1, 3}};
-    vector<int> y{1, 1};
+    vector<vector<double>> input{{1, 2, 3}, {0, 1, 3}, {2, 1, 0}};
+    vector<int> y{1, 1, 0};
     LogisticRegression lr(input, 3, 2);
-    cout << lr.negativeLogLikelihood(y) << endl;
+    for(int i = 0; i < 500; ++i) {
+        lr.update(0.01, y);
+        cout << lr.calcError(y) << endl;
+    }
     return 0;
 }
 
