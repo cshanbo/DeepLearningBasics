@@ -4,7 +4,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-21 16:59:40
+Last modified: 2016-07-21 17:37:08
 GCC version: 4.9.3
 */
 
@@ -94,12 +94,17 @@ void LogisticRegression::update(double rate, vector<int> y) {
 
 int main() {
     vector<vector<double>> input{{1, 2, 3}, {0, 1, 3}, {2, 1, 0}};
+    vector<vector<double>> test{{1, 1, 0}, {0, 1, 1}};
     vector<int> y{1, 1, 0};
     LogisticRegression lr(input, 3, 2);
     for(int i = 0; i < 500; ++i) {
         lr.update(0.01, y);
-        cout << lr.calcError(y) << endl;
     }
+    vector<vector<double>> ygx;
+    dot(test, lr.weight, ygx, lr.bias);
+    lr.softmax(ygx);
+    for(unsigned int i = 0; i < test.size(); ++i)
+        cout <<  maxIndex(ygx[i]) << endl;
     return 0;
 }
 
@@ -115,3 +120,4 @@ int main() {
 
 
 //
+
