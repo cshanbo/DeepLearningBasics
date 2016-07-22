@@ -34,6 +34,8 @@ public:
     double negativeLogLikelihood(vector<int>);
     double calcError(vector<int>);
 
+    void train(vector<vector<double>>, vector<int> y, int, double = 0.1);
+    vector<int> test(vector<vector<double>>, vector<int> y);
 };
 
 #endif
