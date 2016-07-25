@@ -13,4 +13,4 @@ This project contains Machine Learning basics wrote by myself
         3. ReLU
 
 2. Multi-layer Perceptron (Feedforward NN)
-    1. To be done
+    1. hiddenlayer done
