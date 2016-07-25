@@ -4,7 +4,7 @@ Program: Hidden Layer.cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 09:27:14
-Last modified: 2016-07-24 21:19:57
+Last modified: 2016-07-25 09:56:50
 GCC version: 4.7.3
 */
 
@@ -46,8 +46,8 @@ void HiddenLayer::update(double rate, vector<int> y) {
     for(unsigned int k = 0; k < input.size(); ++k) {
         for(int i = 0; i < n_out; ++i) {
             for(int j = 0; j < n_in; ++j) {
-                dy = (1 - tanh(output[k][i])) * input[k][j];
-                weights[j][i] += rate * dy * input[k][j] / input.size();
+                dy = (1 - tanh(output[k][i])) * input[k][j]* (y[k] == i? 1 - output[k][i]: -1 * output[k][i]);
+                weights[j][i] += rate * dy / input.size();
                 bias[i] += rate * dy / input.size();
             }
         }
@@ -106,18 +106,19 @@ int main() {
         {1, 0, 1, 0, 0, 0},
         {0, 0, 1, 1, 1, 0}, 
         {0, 0, 0, 1, 1, 1}, 
-        {0, 1, 0, 0, 0, 1}, 
+        {0, 1, 0, 0, 0, 0}, 
         {0, 1, 1, 1, 1, 1}, 
-        {0, 0, 0, 0, 0, 1}, 
+        {0, 0, 0, 1, 0, 1}, 
     };
 
-    vector<int> ytest{0, 1, 1, 0, 1, 0};
+    vector<int> ytest{0, 1, 1, 0, 1, 1};
 
     HiddenLayer hidden(6, 2, input, 0);
-    for(int i = 0; i < 5000; ++i)
+    for(int i = 0; i < 50; ++i)
         hidden.update(0.01, ytrain);
 
     print(hidden.weights);
+
     vector<int> label;
     vector<vector<double>> ygx;
     dot(test, hidden.weights, ygx, hidden.bias);
@@ -125,8 +126,10 @@ int main() {
     for(auto v: ygx)
         label.push_back(maxIndex(v));
     double precision = 0;
-    for(unsigned int i = 0; i < ytest.size(); ++i)
+    for(unsigned int i = 0; i < ytest.size(); ++i) {
         precision = ytest[i] != label[i] ? precision: precision + 1;
+        cout << ytest[i] << '\t' << label[i] << endl;
+    }
     precision /= ytest.size();
     cout << "Precision:" << precision << endl;
 
