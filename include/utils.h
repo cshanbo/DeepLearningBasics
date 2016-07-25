@@ -10,6 +10,7 @@ GCC version: 4.7.3
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
+#include <string>
 #include <vector>
 using namespace std;
 
@@ -19,8 +20,18 @@ void dot(vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>
 
 void print(vector<vector<double>>);
 
-int maxIndex(vector<double>& vec);
+int maxIndex(vector<double>&);
 
-double sigmoid(double x);
+double sigmoid(double);
+
+double L1(vector<vector<double>>&);
+
+double L2(vector<vector<double>>&);
+
+void split(const string &, const string &, vector<string> &);
+
+string &trim(string &);
+
+void string_replace(string &, const string &, const string &);
 
 #endif

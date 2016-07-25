@@ -1,22 +1,20 @@
-//coding:utf-8
 /*
 Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-22 12:38:23
+Last modified: 2016-07-24 20:38:28
 GCC version: 4.9.3
 */
 
 #include <iostream>
 #include <stdlib.h>
-#include <cassert>
 #include <cmath>
+#include <vector>
+#include <cassert>
 #include <algorithm>
-#include <math.h>
 #include "../include/LR.h"
 #include "../include/utils.h"
-#include <vector>
 using namespace std;
 
 LogisticRegression::LogisticRegression() {}
@@ -26,9 +24,9 @@ LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, i
     n_in = in_d;
     n_out = out_d;
     this->input = input;
-    weight = vector<vector<double>>(n_in, vector<double>(n_out, 0));
+    weights = vector<vector<double>>(n_in, vector<double>(n_out, 0));
     bias = vector<double>(n_out, 0);
-    dot(input, weight, y_given_x, bias);
+    dot(input, weights, y_given_x, bias);
     softmax(y_given_x);
     y_pred = vector<int>(input.size(), 0);
     for(unsigned int i = 0; i < y_pred.size(); ++i)
@@ -81,11 +79,11 @@ void LogisticRegression::update(double rate, vector<int> y) {
         for(int i = 0; i < n_out; ++i) {
             dy = y[k] == i? 1 - y_given_x[k][i]: -1 * y_given_x[k][i];
             for(int j = 0; j < n_in; ++j)
-                weight[j][i] += rate * dy * input[k][j] / input.size();
+                weights[j][i] += rate * dy * input[k][j] / input.size();
             bias[i] += rate * dy / input.size();
         }
     }
-    dot(input, weight, y_given_x, bias);
+    dot(input, weights, y_given_x, bias);
     cout << negativeLogLikelihood(y) << endl;
     for(unsigned int i = 0; i < y_pred.size(); ++i)
         y_pred[i] = maxIndex(y_given_x[i]);
@@ -101,7 +99,7 @@ void LogisticRegression::train(vector<vector<double>> miniBatch, vector<int> y, 
 vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int> y) {
     vector<int> label;
     vector<vector<double>> ygx;
-    dot(testSet, weight, ygx, bias);
+    dot(testSet, weights, ygx, bias);
     softmax(ygx);
     for(auto v: ygx)
         label.push_back(maxIndex(v));
@@ -114,7 +112,7 @@ vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int>
     return label;
 }
 
-
+/*
 int main() {
     vector<vector<double>> input{
         {1, 1, 1, 0, 0, 0},
@@ -143,7 +141,7 @@ int main() {
     for(auto i: v)
         cout << i << endl;
     return 0;
-}
+}*/
 
 
 

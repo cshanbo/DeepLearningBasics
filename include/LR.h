@@ -19,7 +19,7 @@ public:
     int n_in;
     int n_out;
     vector<int> y_pred;
-    vector<vector<double>> weight;
+    vector<vector<double>> weights;
     vector<vector<double>> input;
     vector<double> bias;
     vector<vector<double>> y_given_x;

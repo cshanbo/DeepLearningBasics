@@ -12,7 +12,6 @@ std = C++ 11
 #ifndef _MLP_H_
 #define _MLP_H_
 
-#include <vector>
 #include "../include/HiddenLayer.h"
 #include "../include/LR.h"
 class MLP {
@@ -21,13 +20,19 @@ public:
     int n_in;
     int n_out;
     int n_hidden;	//hidden layer input dimension
+    double negativeLogLikelihood;
+    double errors;
+
     HiddenLayer hiddenLayer;
     LogisticRegression logisticLayer;    
+
     MLP();
-    MLP(int, int, int, vector<vector<double>>); //n_in, n_out, n_hidden
     ~MLP();
-    double L1(vector<vector<double>>&, vector<vector<double>>&);
-    double L2(vector<vector<double>>&, vector<vector<double>>&);
+    MLP(int, int, int, vector<vector<double>>); //n_in, n_out, n_hidden
+
+    double l1_norm(vector<vector<double>>&, vector<vector<double>>&);
+    double l2_norm(vector<vector<double>>&, vector<vector<double>>&);
+    double cost(vector<int>, double, double);
 };
 
 #endif

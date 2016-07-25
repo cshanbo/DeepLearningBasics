@@ -1,0 +1,80 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BIN_DIR	LR/Makefile	/^BIN_DIR = bin$/;"	m
+BIN_DIR	MLP/Makefile	/^BIN_DIR = bin$/;"	m
+BIN_DIR	Makefile	/^BIN_DIR = bin$/;"	m
+CXX	LR/Makefile	/^CXX=g++$/;"	m
+CXX	MLP/Makefile	/^CXX=g++$/;"	m
+CXX	Makefile	/^CXX=g++$/;"	m
+CXXFLAGS	LR/Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+CXXFLAGS	MLP/Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+CXXFLAGS	Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+HiddenLayer	MLP/HiddenLayer.cpp	/^HiddenLayer::HiddenLayer() {}$/;"	f	class:HiddenLayer
+HiddenLayer	MLP/HiddenLayer.cpp	/^HiddenLayer::HiddenLayer(int n_in, int n_out, vector<vector<double>> input, int activationType) {$/;"	f	class:HiddenLayer
+HiddenLayer	include/HiddenLayer.h	/^class HiddenLayer {$/;"	c
+INC_DIR	LR/Makefile	/^INC_DIR = include$/;"	m
+INC_DIR	MLP/Makefile	/^INC_DIR = include$/;"	m
+INC_DIR	Makefile	/^INC_DIR = include$/;"	m
+L1	MLP/MLP.cpp	/^double MLP::L1(vector<vector<double>>& w1, vector<vector<double>>& w2) {$/;"	f	class:MLP
+L2	MLP/MLP.cpp	/^double MLP::L2(vector<vector<double>>& w1, vector<vector<double>>& w2) {$/;"	f	class:MLP
+LogisticRegression	LR/LR.cpp	/^LogisticRegression::LogisticRegression() {}$/;"	f	class:LogisticRegression
+LogisticRegression	LR/LR.cpp	/^LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, int out_d) {$/;"	f	class:LogisticRegression
+LogisticRegression	include/LR.h	/^class LogisticRegression {$/;"	c
+MLP	MLP/MLP.cpp	/^MLP::MLP() {}$/;"	f	class:MLP
+MLP	MLP/MLP.cpp	/^MLP::MLP(int n_in, int n_out, int n_hidden, vector<vector<double>> input) {$/;"	f	class:MLP
+MLP	include/MLP.h	/^class MLP {$/;"	c
+OBJ_DIR	LR/Makefile	/^OBJ_DIR = obj$/;"	m
+OBJ_DIR	MLP/Makefile	/^OBJ_DIR = obj$/;"	m
+OBJ_DIR	Makefile	/^OBJ_DIR = obj$/;"	m
+SRC_DIR	LR/Makefile	/^SRC_DIR = LR $/;"	m
+SRC_DIR	MLP/Makefile	/^SRC_DIR = MLP$/;"	m
+SRC_DIR	Makefile	/^SRC_DIR = MLP$/;"	m
+UTIL_DIR	LR/Makefile	/^UTIL_DIR = utils$/;"	m
+UTIL_DIR	MLP/Makefile	/^UTIL_DIR = utils$/;"	m
+UTIL_DIR	Makefile	/^UTIL_DIR = utils$/;"	m
+_HIDDEN_LAYER_H_	include/HiddenLayer.h	/^#define _HIDDEN_LAYER_H_$/;"	d
+_LOGISTIC_REGRESSION_H_	include/LR.h	/^#define _LOGISTIC_REGRESSION_H_$/;"	d
+_MLP_H_	include/MLP.h	/^#define _MLP_H_$/;"	d
+_UTILS_H_	include/utils.h	/^#define _UTILS_H_$/;"	d
+activation	MLP/HiddenLayer.cpp	/^void HiddenLayer::activation(vector<double>& vec, int s) {$/;"	f	class:HiddenLayer
+activation	MLP/HiddenLayer.cpp	/^void HiddenLayer::activation(vector<vector<double>>& vec, int s) {$/;"	f	class:HiddenLayer
+bias	include/HiddenLayer.h	/^    vector<double> bias;                \/\/a double vector$/;"	m	class:HiddenLayer
+bias	include/LR.h	/^    vector<double> bias;$/;"	m	class:LogisticRegression
+calcError	LR/LR.cpp	/^double LogisticRegression::calcError(vector<int> y) {$/;"	f	class:LogisticRegression
+dot	utils/utils.cpp	/^void dot(vector<vector<double>>& input, vector<vector<double>>& matrix, vector<vector<double>>& ret, vector<double> bias) {$/;"	f
+hiddenLayer	include/MLP.h	/^    HiddenLayer hiddenLayer;$/;"	m	class:MLP
+input	include/HiddenLayer.h	/^    vector<vector<double>> input;       \/\/a double matrix$/;"	m	class:HiddenLayer
+input	include/LR.h	/^    vector<vector<double>> input;$/;"	m	class:LogisticRegression
+input	include/MLP.h	/^    vector<vector<double>> input;$/;"	m	class:MLP
+logisticLayer	include/MLP.h	/^    LogisticRegression logisticLayer;    $/;"	m	class:MLP
+main	LR/LR.cpp	/^int main() {$/;"	f
+main	MLP/MLP.cpp	/^int main() {$/;"	f
+maxIndex	utils/utils.cpp	/^int maxIndex(vector<double>& vec) {$/;"	f
+n_hidden	include/MLP.h	/^    int n_hidden;	\/\/hidden layer input dimension$/;"	m	class:MLP
+n_in	include/HiddenLayer.h	/^    int n_in;       \/\/dimension of input$/;"	m	class:HiddenLayer
+n_in	include/LR.h	/^    int n_in;$/;"	m	class:LogisticRegression
+n_in	include/MLP.h	/^    int n_in;$/;"	m	class:MLP
+n_out	include/HiddenLayer.h	/^    int n_out;	    \/\/dimension of output$/;"	m	class:HiddenLayer
+n_out	include/LR.h	/^    int n_out;$/;"	m	class:LogisticRegression
+n_out	include/MLP.h	/^    int n_out;$/;"	m	class:MLP
+negativeLogLikelihood	LR/LR.cpp	/^double LogisticRegression::negativeLogLikelihood(vector<int> y) {$/;"	f	class:LogisticRegression
+output	include/HiddenLayer.h	/^    vector<vector<double>> output;     \/\/a double matrix$/;"	m	class:HiddenLayer
+print	utils/utils.cpp	/^void print(vector<vector<double>> vec) {$/;"	f
+randRange	utils/utils.cpp	/^double randRange(double fMin,  double fMax) {$/;"	f
+sigmoid	LR/LR.cpp	/^void LogisticRegression::sigmoid(vector<vector<double>>& vec) {$/;"	f	class:LogisticRegression
+sigmoid	utils/utils.cpp	/^double sigmoid(double x) {$/;"	f
+softmax	LR/LR.cpp	/^void LogisticRegression::softmax(vector<vector<double>>& vec) {$/;"	f	class:LogisticRegression
+test	LR/LR.cpp	/^vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int> y) {$/;"	f	class:LogisticRegression
+train	LR/LR.cpp	/^void LogisticRegression::train(vector<vector<double>> miniBatch, vector<int> y, int epoch, double rate) {$/;"	f	class:LogisticRegression
+update	LR/LR.cpp	/^void LogisticRegression::update(double rate, vector<int> y) {$/;"	f	class:LogisticRegression
+weight	include/LR.h	/^    vector<vector<double>> weight;$/;"	m	class:LogisticRegression
+weights	include/HiddenLayer.h	/^    vector<vector<double>> weights;     \/\/a double matrix$/;"	m	class:HiddenLayer
+y_given_x	include/LR.h	/^    vector<vector<double>> y_given_x;$/;"	m	class:LogisticRegression
+y_pred	include/LR.h	/^    vector<int> y_pred;$/;"	m	class:LogisticRegression
+~HiddenLayer	MLP/HiddenLayer.cpp	/^HiddenLayer::~HiddenLayer() {}$/;"	f	class:HiddenLayer
+~LogisticRegression	LR/LR.cpp	/^LogisticRegression::~LogisticRegression() {}$/;"	f	class:LogisticRegression
+~MLP	MLP/MLP.cpp	/^MLP::~MLP() {}$/;"	f	class:MLP

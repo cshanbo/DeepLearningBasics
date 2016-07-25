@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-21 13:13:17
+Last modified: 2016-07-24 20:38:10
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -12,9 +12,8 @@ std = C++ 11
 #include "../include/utils.h"
 #include <iostream>
 #include <cstdlib>
-#include <assert.h>
-#include <math.h>
-
+#include <cassert>
+#include <cmath>
 double randRange(double fMin,  double fMax) {
     double f = (double)rand() / RAND_MAX;
     return fMin + f * (fMax - fMin);
@@ -61,5 +60,54 @@ void print(vector<vector<double>> vec) {
         for(auto d: v)
           cout << d << " "; 
         cout << endl;
+    }
+}
+double L1(vector<vector<double>>& w1) {
+    double ret = 0;
+    for(auto v: w1)
+        for(auto d: v)
+            ret += abs(d);
+    return ret;
+}
+
+double L2(vector<vector<double>>& w1) {
+    double ret = 0;
+    for(auto v: w1)
+        for(auto d: v)
+            ret += d * d;
+    return sqrt(ret);
+}
+
+void split(const string &src, const string &separator, vector<string>& dest_list) {
+    size_t pre_pos = 0, position;
+    string temp = "";
+    dest_list.clear();
+    if(src.empty())
+        return;
+    while((position = src.find(separator.c_str(), pre_pos)) != string::npos) {
+        temp.assign(src, pre_pos, position - pre_pos);
+        if(!temp.empty())
+            dest_list.push_back(temp);
+        pre_pos = position + separator.length();
+    }
+    temp.assign(src, pre_pos, src.length() - pre_pos);
+    if(!temp.empty())
+        dest_list.push_back(temp);
+}
+
+string &trim(string &line) {
+    if(!line.empty()) {
+        string empty_str = "\t\r\n ";
+        line.erase(0, line.find_first_not_of(empty_str));
+        line.erase(line.find_last_not_of(empty_str) + 1);
+    }
+    return line;
+}
+
+void string_replace(string &origin, const string &src, const string &tgt) {
+    string::size_type pos = 0, srclen = src.size(),  dstlen = tgt.size();
+    while((pos = origin.find(src, pos)) != string::npos) {
+        origin.replace(pos, srclen, tgt);
+        pos += dstlen;
     }
 }
