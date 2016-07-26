@@ -4,7 +4,7 @@ Program: MLP cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:42:10
-Last modified: 2016-07-26 19:51:01
+Last modified: 2016-07-26 19:54:03
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -86,6 +86,7 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
     //not entirely sure what the problem is
     //use l1_rate and l2_rate as 0 to avoid the influence
     //use small hyper parameters to avoid over-fitting
+    //using large hyper parameter might cause under-fitting.
 
     for(unsigned int i = 0; i < logisticLayer.weights.size(); ++i) {
         for(unsigned int j = 0; j < logisticLayer.weights[0].size(); ++j) {
@@ -140,12 +141,11 @@ int main() {
     vector<int> ytest{0, 1, 1, 0, 1, 1};
 
     MLP feedforward(6, 2, 4, input); //n_in, n_out, n_hidden
-    for(int i = 0; i < 800; ++i) {
+    for(int i = 0; i < 800; ++i)
         feedforward.update(0.1, 0.01, 0.01, ytrain);
-        cout << feedforward.logisticLayer.negativeLogLikelihood(ytrain) << endl;
-    }
 
     vector<int> label;
+
     vector<vector<double>> ygx;
 
     dot(test, feedforward.hiddenLayer.weights, ygx, feedforward.hiddenLayer.bias);
@@ -153,5 +153,6 @@ int main() {
     feedforward.hiddenLayer.activation(ygx, 0);
 
     feedforward.logisticLayer.test(ygx, ytest);
+
     return 0;
 }
