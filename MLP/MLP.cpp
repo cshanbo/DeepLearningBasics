@@ -4,7 +4,7 @@ Program: MLP cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:42:10
-Last modified: 2016-07-25 21:00:07
+Last modified: 2016-07-26 14:25:41
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -57,8 +57,23 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
     //in this update, there is hidden layer involved
     //so I need to modify the gradient calculation
     //
-    double loss = cost(y, l1_rate, l2_rate);
-    logisticLayer.update(rate, y);
+    double dy = 0;
+    for(unsigned int k = 0; k < input.size(); ++k)
+        for(int i = 0; i < n_out; ++i) {
+            dy = y[k] == i? logisticLayer.y_given_x[k][i] - 1: logisticLayer.y_given_x[k][i];
+            for(int j = 0; j < n_hidden; ++j)
+                logisticLayer.weights[j][i] -= rate * dy * hiddenLayer.output[k][j] / input.size();
+            logisticLayer.bias[i] -= rate * dy / input.size();
+        }
+
+    dy = 0;
+    for(unsigned int k = 0; k < input.size(); ++k)
+        for(int i = 0; i < n_out; ++i) {
+            dy = y[k] == i? logisticLayer.y_given_x[k][i] - 1: logisticLayer.y_given_x[k][i];
+            for(int m = 0; m < n_hidden; ++m)
+                for(int j = 0; j < n_in; ++j)
+            hiddenLayer.bias[m] -= rate * dy * (1 - pow(tanh(hiddenLayer.output[k][i]), 2)) * logisticLayer.weights[m][i] / input.size();
+        }
     //2. update L1 and l2 norm. Both logistic and hidden layer should be updated
     double sumLogistic = 0, sumHidden = 0;
 
@@ -72,16 +87,16 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
 
     for(unsigned int i = 0; i < logisticLayer.weights.size(); ++i) {
         for(unsigned int j = 0; j < logisticLayer.weights[0].size(); ++j) {
-            logisticLayer.weights[i][j] -= rate * loss * l1_rate * (logisticLayer.weights[i][j] < 0? -1 : 1); 
-            logisticLayer.weights[i][j] -= rate * loss * l2_rate * logisticLayer.weights[i][j] / sqrt(sumLogistic); 
+            logisticLayer.weights[i][j] -= rate * l1_rate * (logisticLayer.weights[i][j] < 0? -1 : 1); 
+            logisticLayer.weights[i][j] -= rate * l2_rate * logisticLayer.weights[i][j] / sqrt(sumLogistic); 
         }
     }
 
 
     for(unsigned int i = 0; i < hiddenLayer.weights.size(); ++i) {
         for(unsigned int j = 0; j < hiddenLayer.weights[0].size(); ++j) {
-            hiddenLayer.weights[i][j] -= rate * l1_rate * loss * (hiddenLayer.weights[i][j] < 0? -1 : 1); 
-            hiddenLayer.weights[i][j] -= rate * l2_rate * loss * hiddenLayer.weights[i][j] / sqrt(sumHidden); 
+            hiddenLayer.weights[i][j] -= rate * l1_rate * (hiddenLayer.weights[i][j] < 0? -1 : 1); 
+            hiddenLayer.weights[i][j] -= rate * l2_rate * hiddenLayer.weights[i][j] / sqrt(sumHidden); 
         }
     }
 
@@ -89,7 +104,6 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
     hiddenLayer.activation(hiddenLayer.output, 0);
     dot(hiddenLayer.output, logisticLayer.weights, logisticLayer.y_given_x, logisticLayer.bias);
     logisticLayer.softmax(logisticLayer.y_given_x);
-    //logisticLayer.softmax(logisticLayer.output);
 }
 
 int main() {
@@ -117,15 +131,17 @@ int main() {
     vector<int> ytest{0, 1, 1, 0, 1, 1};
 
     MLP feedforward(6, 2, 4, input); //n_in, n_out, n_hidden
-    for(int i = 0; i < 500; ++i)
-        feedforward.update(0.1, 0, 0, ytrain);
+    for(int i = 0; i < 5; ++i)
+        feedforward.update(0.1, 0.1, 0.1, ytrain);
 
+    cout << "====" << endl;
     print(feedforward.hiddenLayer.weights);
     vector<int> label;
     vector<vector<double>> ygx;
+
     dot(test, feedforward.hiddenLayer.weights, ygx, feedforward.hiddenLayer.bias);
     feedforward.hiddenLayer.activation(ygx, 0);
+
     feedforward.logisticLayer.test(feedforward.hiddenLayer.output, ytest);
-    
     return 0;
 }

@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-25 20:53:18
+Last modified: 2016-07-26 13:44:50
 GCC version: 4.9.3
 */
 
@@ -77,13 +77,23 @@ void LogisticRegression::update(double rate, vector<int> y) {
     double dy = 0;
     for(unsigned int k = 0; k < input.size(); ++k) {
         for(int i = 0; i < n_out; ++i) {
-            dy = y[k] == i? 1 - y_given_x[k][i]: -1 * y_given_x[k][i];
+            //the gradient of soft max is this line
+            //dy = y[k] == i? 1 - y_given_x[k][i]: -1 * y_given_x[k][i];
+            //while the gradient of negativeloglikelihood is simply y_i - o_i (before softmax)
+            //o_i is weight dot input
+            //so the gradient of weight is easy to calc
+            dy = y[k] == i? y_given_x[k][i] - 1: y_given_x[k][i];
+            //mini batch, average
+            
             for(int j = 0; j < n_in; ++j)
-                weights[j][i] += rate * dy * input[k][j] / input.size();
+                weights[j][i] -= rate * dy * input[k][j] / input.size();
+
+            //bias doesn't need to product with input
             bias[i] += rate * dy / input.size();
         }
     }
     dot(input, weights, y_given_x, bias);
+    softmax(y_given_x);
     for(unsigned int i = 0; i < y_pred.size(); ++i)
         y_pred[i] = maxIndex(y_given_x[i]);
 }
@@ -106,7 +116,6 @@ vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int>
     for(unsigned int i = 0; i < y.size(); ++i)
         precision = y[i] != label[i] ? precision: precision + 1;
     precision /= y.size();
-    cout << endl;
     cout << "Precision:" << precision << endl;
     return label;
 }
