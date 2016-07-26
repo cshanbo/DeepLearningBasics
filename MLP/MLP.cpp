@@ -4,7 +4,7 @@ Program: MLP cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:42:10
-Last modified: 2016-07-26 17:24:52
+Last modified: 2016-07-26 19:51:01
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -69,6 +69,7 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
             logisticLayer.bias[i] -= rate * dy / input.size();
         }
     }
+    //update the hidden layer
 
     dy = 0;
     for(unsigned int k = 0; k < input.size(); ++k)
@@ -81,21 +82,25 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
             }
         }
     //2. update L1 and l2 norm. Both logistic and hidden layer should be updated
+    //there might be something wrong with this part
+    //not entirely sure what the problem is
+    //use l1_rate and l2_rate as 0 to avoid the influence
+    //use small hyper parameters to avoid over-fitting
 
-    //for(unsigned int i = 0; i < logisticLayer.weights.size(); ++i) {
-    //    for(unsigned int j = 0; j < logisticLayer.weights[0].size(); ++j) {
-    //        logisticLayer.weights[i][j] -= rate * l1_rate * (logisticLayer.weights[i][j] < 0? -1 : 1); 
-    //        logisticLayer.weights[i][j] -= rate * l2_rate * 2 * logisticLayer.weights[i][j]; 
-    //    }
-    //}
+    for(unsigned int i = 0; i < logisticLayer.weights.size(); ++i) {
+        for(unsigned int j = 0; j < logisticLayer.weights[0].size(); ++j) {
+            logisticLayer.weights[i][j] -= rate * l1_rate * (logisticLayer.weights[i][j] < 0? -1 : 1); 
+            logisticLayer.weights[i][j] -= rate * l2_rate * 2 * logisticLayer.weights[i][j]; 
+        }
+    }
 
 
-    //for(unsigned int i = 0; i < hiddenLayer.weights.size(); ++i) {
-    //    for(unsigned int j = 0; j < hiddenLayer.weights[0].size(); ++j) {
-    //        hiddenLayer.weights[i][j] -= rate * l1_rate * (hiddenLayer.weights[i][j] < 0? -1 : 1); 
-    //        hiddenLayer.weights[i][j] -= rate * l2_rate * 2 * hiddenLayer.weights[i][j]; 
-    //    }
-    //}
+    for(unsigned int i = 0; i < hiddenLayer.weights.size(); ++i) {
+        for(unsigned int j = 0; j < hiddenLayer.weights[0].size(); ++j) {
+            hiddenLayer.weights[i][j] -= rate * l1_rate * (hiddenLayer.weights[i][j] < 0? -1 : 1); 
+            hiddenLayer.weights[i][j] -= rate * l2_rate * 2 * hiddenLayer.weights[i][j]; 
+        }
+    }
 
     //forward
     dot(input, hiddenLayer.weights, hiddenLayer.output, hiddenLayer.bias);
@@ -135,8 +140,8 @@ int main() {
     vector<int> ytest{0, 1, 1, 0, 1, 1};
 
     MLP feedforward(6, 2, 4, input); //n_in, n_out, n_hidden
-    for(int i = 0; i < 500; ++i) {
-        feedforward.update(0.1, 0.1, 0.1, ytrain);
+    for(int i = 0; i < 800; ++i) {
+        feedforward.update(0.1, 0.01, 0.01, ytrain);
         cout << feedforward.logisticLayer.negativeLogLikelihood(ytrain) << endl;
     }
 
