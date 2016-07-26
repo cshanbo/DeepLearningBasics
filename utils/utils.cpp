@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-24 20:38:10
+Last modified: 2016-07-25 18:09:57
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -111,3 +111,4 @@ void string_replace(string &origin, const string &src, const string &tgt) {
         pos += dstlen;
     }
 }
+

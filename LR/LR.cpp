@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-24 20:38:28
+Last modified: 2016-07-25 20:53:18
 GCC version: 4.9.3
 */
 
@@ -84,7 +84,6 @@ void LogisticRegression::update(double rate, vector<int> y) {
         }
     }
     dot(input, weights, y_given_x, bias);
-    cout << negativeLogLikelihood(y) << endl;
     for(unsigned int i = 0; i < y_pred.size(); ++i)
         y_pred[i] = maxIndex(y_given_x[i]);
 }

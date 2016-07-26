@@ -33,6 +33,8 @@ public:
     double l1_norm(vector<vector<double>>&, vector<vector<double>>&);
     double l2_norm(vector<vector<double>>&, vector<vector<double>>&);
     double cost(vector<int>, double, double);
+
+    void update(double, double, double, vector<int>);
 };
 
 #endif

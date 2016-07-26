@@ -4,7 +4,7 @@ Program: Hidden Layer.cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 09:27:14
-Last modified: 2016-07-25 09:56:50
+Last modified: 2016-07-25 19:14:43
 GCC version: 4.7.3
 */
 
@@ -89,7 +89,7 @@ void HiddenLayer::activation(vector<vector<double>>& vec, int s) {
                 vec[i][j] = vec[i][j] >= 0? vec[i][j]: 0;
 }
 
-int main() {
+/*int main() {
     vector<vector<double>> input{
         {1, 1, 1, 0, 0, 0},
         {1, 0, 1, 0, 0, 0},
@@ -134,4 +134,4 @@ int main() {
     cout << "Precision:" << precision << endl;
 
     return 0;
-}
+}*/
