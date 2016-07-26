@@ -4,7 +4,7 @@ Program: Hidden Layer.cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 09:27:14
-Last modified: 2016-07-25 19:14:43
+Last modified: 2016-07-26 14:36:39
 GCC version: 4.7.3
 */
 

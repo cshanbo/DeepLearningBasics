@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-26 13:44:50
+Last modified: 2016-07-26 16:39:28
 GCC version: 4.9.3
 */
 
@@ -85,11 +85,12 @@ void LogisticRegression::update(double rate, vector<int> y) {
             dy = y[k] == i? y_given_x[k][i] - 1: y_given_x[k][i];
             //mini batch, average
             
-            for(int j = 0; j < n_in; ++j)
+            for(int j = 0; j < n_in; ++j) {
                 weights[j][i] -= rate * dy * input[k][j] / input.size();
+            }
 
             //bias doesn't need to product with input
-            bias[i] += rate * dy / input.size();
+            bias[i] -= rate * dy / input.size();
         }
     }
     dot(input, weights, y_given_x, bias);
@@ -101,8 +102,11 @@ void LogisticRegression::update(double rate, vector<int> y) {
 void LogisticRegression::train(vector<vector<double>> miniBatch, vector<int> y, int epoch, double rate) {
     if(miniBatch.empty())
         return;
-    for(int i = 0; i < epoch; ++i)
+    for(int i = 0; i < epoch; ++i) {
         update(rate, y);
+        cout << negativeLogLikelihood(y) << endl;
+        cout << endl;
+    }
 }
 
 vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int> y) {
@@ -120,7 +124,7 @@ vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int>
     return label;
 }
 
-/*
+
 int main() {
     vector<vector<double>> input{
         {1, 1, 1, 0, 0, 0},
@@ -143,13 +147,11 @@ int main() {
     vector<int> ytest{0, 1, 1, 0};
     LogisticRegression lr(input, 6, 2);
 
-    lr.train(input, ytrain, 500);
+    lr.train(input, ytrain, 5000);
     auto v = lr.test(test, ytest);
 
-    for(auto i: v)
-        cout << i << endl;
     return 0;
-}*/
+}
 
 
 
