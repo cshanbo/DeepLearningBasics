@@ -4,7 +4,7 @@ Program: Hidden Layer.cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 09:27:14
-Last modified: 2016-07-26 14:36:39
+Last modified: 2016-07-26 16:44:32
 GCC version: 4.7.3
 */
 
@@ -46,7 +46,7 @@ void HiddenLayer::update(double rate, vector<int> y) {
     for(unsigned int k = 0; k < input.size(); ++k) {
         for(int i = 0; i < n_out; ++i) {
             for(int j = 0; j < n_in; ++j) {
-                dy = (1 - tanh(output[k][i])) * input[k][j]* (y[k] == i? 1 - output[k][i]: -1 * output[k][i]);
+                dy = (1 - pow(tanh(output[k][i]), 2)) * input[k][j]* (y[k] == i? 1 - output[k][i]: -1 * output[k][i]);
                 weights[j][i] += rate * dy / input.size();
                 bias[i] += rate * dy / input.size();
             }

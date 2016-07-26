@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-26 16:39:28
+Last modified: 2016-07-26 16:46:23
 GCC version: 4.9.3
 */
 
@@ -125,7 +125,7 @@ vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int>
 }
 
 
-int main() {
+/*int main() {
     vector<vector<double>> input{
         {1, 1, 1, 0, 0, 0},
         {1, 0, 1, 0, 0, 0},
@@ -151,7 +151,7 @@ int main() {
     auto v = lr.test(test, ytest);
 
     return 0;
-}
+}*/
 
 
 
