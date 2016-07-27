@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-25 18:09:57
+Last modified: 2016-07-27 10:04:12
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -112,3 +112,11 @@ void string_replace(string &origin, const string &src, const string &tgt) {
     }
 }
 
+void transpose(vector<vector<double>> src, vector<vector<double>> &tgt) {
+    if(src.empty())
+        return;
+    assert(src.size() == tgt[0].size() && src[0].size() == tgt.size());
+    for(unsigned int i = 0; i < src.size(); ++i)
+        for(unsigned int j = 0; j < src[0].size(); ++j)
+            tgt[j][i] = src[i][j];
+}

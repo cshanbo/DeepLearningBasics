@@ -4,7 +4,7 @@ Program: MLP cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:42:10
-Last modified: 2016-07-26 19:54:03
+Last modified: 2016-07-26 20:45:11
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -42,14 +42,6 @@ double MLP::cost(vector<int> y, double l1_rate, double l2_rate) {
 }
 
 void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
-    /*cost = (
-        classifier.negative_log_likelihood(y)
-        + L1_reg * classifier.L1
-        + L2_reg * classifier.L2_sqr
-    )
-    gparams = [T.grad(cost, param) for param in classifier.params]
-    */
-
     //update logistic layer first (output layer)
     //other than the original logistic layer, there is another updating at the l1 and l2 normalization
     //the gradient of cost is the sum of negative_log_likelihood, l1_norm, l2_norm
@@ -69,8 +61,8 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
             logisticLayer.bias[i] -= rate * dy / input.size();
         }
     }
-    //update the hidden layer
 
+    //update the hidden layer
     dy = 0;
     for(unsigned int k = 0; k < input.size(); ++k)
         for(int i = 0; i < n_out; ++i) {
@@ -116,7 +108,7 @@ void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {
         logisticLayer.y_pred[i] = maxIndex(logisticLayer.y_given_x[i]);
 }
 
-int main() {
+/*int main() {
     vector<vector<double>> input{
         {1, 1, 1, 0, 0, 0},
         {1, 0, 1, 0, 0, 0},
@@ -155,4 +147,4 @@ int main() {
     feedforward.logisticLayer.test(ygx, ytest);
 
     return 0;
-}
+}*/
