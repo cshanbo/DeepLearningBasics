@@ -4,7 +4,7 @@ Program: RBM cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-27 11:03:50
-Last modified: 2016-07-28 14:46:50
+Last modified: 2016-07-28 16:37:13
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -149,7 +149,7 @@ void RBM::update(double rate, vector<vector<double>> persistence = vector<vector
     for(unsigned int k = 0; k < input.size(); ++k) {
         for(int i = 0; i < n_hidden; ++i) {
             for(int j = 0; j < n_visible; ++j) {
-                weights[i][j] += rate * (ph_samples[k][i] * input[k][j] - nh_means[k][i] * nv_samples[k][j]) / input.size();
+                weights[j][i] += rate * (ph_samples[k][i] * input[k][j] - nh_means[k][i] * nv_samples[k][j]) / input.size();
             }
             hbias[i] += rate * (ph_samples[k][i] - nh_means[k][i]) / input.size();
         }
@@ -169,6 +169,9 @@ void RBM::reconstruct(vector<vector<double>>& v, vector<vector<double>>& reconst
     vector<vector<double>> T;
     transpose(weights, T);
     dot(h, T, reconstructed_v, vbias);
+    for(auto& vec: reconstructed_v)
+        for(auto& d: vec)
+            d = sigmoid(d);
 }
 
 
