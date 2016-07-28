@@ -31,7 +31,14 @@ public:
 
     double getCostUpdates(double = 0.1, int = 1);
 
-    void sampleHGivenV(vector<vector<double>> v0_sample, vector<vector<double>>& pre_sigmoid_h1, vector<vector<double>>& h1_mean, vector<vector<double>>& h1_sample);
+    void sampleHGivenV(vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>>&);
+
+    void sampleVGivenH(vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>>&);
+    //output, pre_sigmoid, mean(sigmoid), input
+
+    void update(double, vector<vector<double>>, int k);
+
+    void reconstruct(vector<int>&, vector<double>&);
 
 };
 

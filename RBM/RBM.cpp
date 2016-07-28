@@ -4,7 +4,7 @@ Program: RBM cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-27 11:03:50
-Last modified: 2016-07-27 15:59:10
+Last modified: 2016-07-28 13:19:23
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -15,6 +15,8 @@ GCC version: 4.9.3
 #include "../include/utils.h"
 
 using namespace std;
+
+RBM::~RBM() {}
 
 RBM::RBM(int n_visible, int n_hidden, vector<vector<double>> input, vector<double> vbias, vector<double> hbias) {
     this->n_hidden = n_hidden;
@@ -32,6 +34,54 @@ RBM::RBM(int n_visible, int n_hidden, vector<vector<double>> input, vector<doubl
     for(unsigned int i = 0; i < this->weights.size(); ++i) 
         for(unsigned int j = 0; j < this->weights[0].size(); ++j)
             this->weights[i][j] = randRange(-4.0 * sqrt(6.0 / (n_visible + n_hidden)), 4.0 * sqrt(6.0 / (n_visible + n_hidden)));
+}
+
+void RBM::sampleHGivenV(vector<vector<double>>& h1_sample, vector<vector<double>>& pre_sigmoid_h1, vector<vector<double>>& h1_mean, vector<vector<double>>& v0_sample) {
+    //the parameters order:
+    //parameter: output, pre, mean, input
+    dot(v0_sample, weights, pre_sigmoid_h1, hbias);
+    if(h1_mean.empty())
+        h1_mean = vector<vector<double>>(pre_sigmoid_h1.size(), vector<double>(pre_sigmoid_h1[0].size(), 0));
+    if(h1_sample.empty())
+        h1_sample = vector<vector<double>>(pre_sigmoid_h1.size(), vector<double>(pre_sigmoid_h1[0].size(), 0));
+
+    for(unsigned int i = 0; i < pre_sigmoid_h1.size(); ++i)
+        for(unsigned int j = 0; j < pre_sigmoid_h1[0].size(); ++j)
+            h1_mean[i][j] = sigmoid(pre_sigmoid_h1[i][j]);
+    //Sample from binomial distribution
+    for(unsigned int i = 0; i < h1_mean.size(); ++i)
+        for(unsigned int j = 0; j < h1_mean[0].size(); ++j) {
+            if(randRange(0, 1) <= h1_mean[i][j])
+                h1_sample[i][j] = 1;
+            else
+                h1_sample[i][j] = 0;
+        }
+}
+
+void RBM::sampleVGivenH(vector<vector<double>>& v1_sample, vector<vector<double>>& pre_sigmoid_v1, vector<vector<double>>& v1_mean, vector<vector<double>>& h0_sample) {
+    //sample_results, pre_si, mean_of_2nd_parameter, input
+    //parameter: output, pre, mean, input
+    vector<vector<double>> T;
+    transpose(weights, T);
+    dot(h0_sample, T, pre_sigmoid_v1, vbias);
+
+    if(v1_mean.empty())
+        v1_mean = vector<vector<double>>(pre_sigmoid_v1.size(), vector<double>(pre_sigmoid_v1[0].size(), 0));
+    if(v1_sample.empty())
+        v1_sample = vector<vector<double>>(pre_sigmoid_v1.size(), vector<double>(pre_sigmoid_v1[0].size(), 0));
+
+    for(unsigned int i = 0; i < pre_sigmoid_v1.size(); ++i)
+        for(unsigned int j = 0; j < pre_sigmoid_v1[0].size(); ++j)
+            v1_mean[i][j] = sigmoid(pre_sigmoid_v1[i][j]);
+
+    //Sample from binomial distribution
+    for(unsigned int i = 0; i < v1_mean.size(); ++i)
+        for(unsigned int j = 0; j < v1_mean[0].size(); ++j) {
+            if(randRange(0, 1) <= v1_mean[i][j])
+                v1_sample[i][j] = 1;
+            else
+                v1_sample[i][j] = 0;
+        }
 }
 
 vector<double> RBM::freeEnergy(vector<vector<double>> v_sample) {
@@ -57,23 +107,124 @@ vector<double> RBM::freeEnergy(vector<vector<double>> v_sample) {
     return ret;
 }
 
-void RBM::sampleHGivenV(vector<vector<double>> v0_sample, vector<vector<double>>& pre_sigmoid_h1, vector<vector<double>>& h1_mean, vector<vector<double>>& h1_sample) {
-    dot(v0_sample, weights, pre_sigmoid_h1, hbias);
-    h1_mean = vector<vector<double>>(pre_sigmoid_h1.size(), vector<double>(pre_sigmoid_h1[0].size(), 0));
-    h1_sample = vector<vector<double>>(pre_sigmoid_h1.size(), vector<double>(pre_sigmoid_h1[0].size(), 0));
+void RBM::update(double rate, vector<vector<double>> persistence = vector<vector<double>>{}, int k = 1) {
+    //contrasive divergence
+    //compute positive phase
+    vector<vector<double>> chain_start;
 
-    for(unsigned int i = 0; i < pre_sigmoid_h1.size(); ++i)
-        for(unsigned int j = 0; j < pre_sigmoid_h1[0].size(); ++j)
-            h1_mean[i][j] = sigmoid(pre_sigmoid_h1[i][j]);
+    vector<vector<double>> pre_sigmoid_ph(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
+    vector<vector<double>> ph_means(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
+    vector<vector<double>> ph_samples(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
 
-    //Sample from binomial distribution
-    for(unsigned int i = 0; i < h1_mean.size(); ++i)
-        for(unsigned int j = 0; j < h1_mean[0].size(); ++j) {
-            if(randRange(0, 1) <= h1_mean[i][j])
-                h1_sample[i][j] = 1;
-            else
-                h1_sample[i][j] = 0;
+    sampleHGivenV(input, pre_sigmoid_ph, ph_means, ph_samples);
+    //=======================//
+    //
+
+    if(persistence.empty())
+        chain_start = ph_samples;
+    else
+        chain_start = persistence;
+
+    vector<vector<double>> pre_sigmoid_nvs(vector<vector<double>>(input.size(), vector<double>(n_visible, 0)));
+    vector<vector<double>> nv_means(vector<vector<double>>(input.size(), vector<double>(n_visible, 0)));
+    vector<vector<double>> nv_samples(vector<vector<double>>(input.size(), vector<double>(n_visible, 0)));
+
+    vector<vector<double>> pre_sigmoid_nhs(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
+    vector<vector<double>> nh_means(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
+    vector<vector<double>> nh_samples(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
+
+    for(int i = 0; i < k; ++i) {
+        if(i == 0) {
+            sampleVGivenH(nv_samples, pre_sigmoid_nvs, nv_means, chain_start);
+            sampleHGivenV(nh_samples, pre_sigmoid_nhs, nh_means, nv_samples);
+        } else {
+            sampleVGivenH(nv_samples, pre_sigmoid_nvs, nv_means, nh_samples);
+            sampleHGivenV(nh_samples, pre_sigmoid_nhs, nh_means, nv_samples);
         }
+    }
+
+    for(unsigned int k = 0; k < input.size(); ++k) {
+        for(int i = 0; i < n_hidden; ++i) {
+            for(int j = 0; j < n_visible; ++j) {
+                weights[i][j] += rate * (ph_samples[k][i] * input[k][j] - nh_means[k][i] * nv_samples[k][j]) / input.size();
+            }
+            hbias[i] += rate * (ph_samples[k][i] - nh_means[k][i]) / input.size();
+        }
+
+        for(int i = 0; i < n_visible; ++i)
+            vbias[i] += rate * (input[k][i] - nv_samples[k][i]) / input.size();
+    }
+
+}
+
+void RBM::reconstruct(vector<int>& v, vector<double>& reconstructed_v) {
+    vector<double> h(n_hidden, 0);
+    double pre_sigmoid_activation;
+
+  for(int i=0; i<n_hidden; i++) {
+    h[i] = propup(v, W[i], hbias[i]);
+  }
+
+  for(int i=0; i<n_visible; i++) {
+    pre_sigmoid_activation = 0.0;
+    for(int j=0; j<n_hidden; j++) {
+      pre_sigmoid_activation += W[j][i] * h[j];
+    }
+    pre_sigmoid_activation += vbias[i];
+
+    reconstructed_v[i] = sigmoid(pre_sigmoid_activation);
+  }
+
+  delete[] h;
+}
+
+
+void test_rbm() {
+  double learning_rate = 0.1;
+  int training_epochs = 1000;
+  int k = 1;
+  
+  int n_visible = 6;
+  int n_hidden = 3;
+
+  // training data
+  vector<vector<double>> train_X = {
+    {1, 1, 1, 0, 0, 0},
+    {1, 0, 1, 0, 0, 0},
+    {1, 1, 1, 0, 0, 0},
+    {0, 0, 1, 1, 1, 0},
+    {0, 0, 1, 0, 1, 0},
+    {0, 0, 1, 1, 1, 0}
+  };
+
+
+  // construct RBM
+  RBM rbm(n_visible, n_hidden, train_X, vector<vector<double>>{}, vector<vector<double>>{});
+
+  // train
+    for(int epoch=0; epoch<training_epochs; epoch++) {
+        for(int i=0; i<train_N; i++) {
+            rbm.update(learning_rate);
+        }
+    }
+
+  // test data
+  vector<vector<double>> test_X = {
+    {1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 1, 1, 0}
+  };
+  double reconstructed_X[2][6];
+
+
+  // test
+  for(int i=0; i<test_N; i++) {
+    rbm.reconstruct(test_X[i], reconstructed_X[i]);
+    for(int j=0; j<n_visible; j++) {
+      printf("%.5f ", reconstructed_X[i][j]);
+    }
+    cout << endl;
+  }
+
 }
 
 int main() {
