@@ -19,6 +19,7 @@ public:
     vector<vector<double>> weights;
     vector<double> hbias;
     vector<double> vbias;
+
     int n_visible;
     int n_hidden;
     vector<vector<double>> input;
@@ -38,7 +39,7 @@ public:
 
     void update(double, vector<vector<double>>, int k);
 
-    void reconstruct(vector<int>&, vector<double>&);
+    void reconstruct(vector<vector<double>>&, vector<vector<double>>&);
 
 };
 

@@ -4,7 +4,7 @@ Program: RBM cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-27 11:03:50
-Last modified: 2016-07-28 13:19:23
+Last modified: 2016-07-28 14:46:50
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -13,6 +13,7 @@ GCC version: 4.9.3
 
 #include "../include/RBM.h"
 #include "../include/utils.h"
+#include <iostream>
 
 using namespace std;
 
@@ -39,6 +40,7 @@ RBM::RBM(int n_visible, int n_hidden, vector<vector<double>> input, vector<doubl
 void RBM::sampleHGivenV(vector<vector<double>>& h1_sample, vector<vector<double>>& pre_sigmoid_h1, vector<vector<double>>& h1_mean, vector<vector<double>>& v0_sample) {
     //the parameters order:
     //parameter: output, pre, mean, input
+
     dot(v0_sample, weights, pre_sigmoid_h1, hbias);
     if(h1_mean.empty())
         h1_mean = vector<vector<double>>(pre_sigmoid_h1.size(), vector<double>(pre_sigmoid_h1[0].size(), 0));
@@ -48,6 +50,7 @@ void RBM::sampleHGivenV(vector<vector<double>>& h1_sample, vector<vector<double>
     for(unsigned int i = 0; i < pre_sigmoid_h1.size(); ++i)
         for(unsigned int j = 0; j < pre_sigmoid_h1[0].size(); ++j)
             h1_mean[i][j] = sigmoid(pre_sigmoid_h1[i][j]);
+
     //Sample from binomial distribution
     for(unsigned int i = 0; i < h1_mean.size(); ++i)
         for(unsigned int j = 0; j < h1_mean[0].size(); ++j) {
@@ -116,7 +119,7 @@ void RBM::update(double rate, vector<vector<double>> persistence = vector<vector
     vector<vector<double>> ph_means(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
     vector<vector<double>> ph_samples(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
 
-    sampleHGivenV(input, pre_sigmoid_ph, ph_means, ph_samples);
+    sampleHGivenV(ph_samples, pre_sigmoid_ph, ph_means, input);
     //=======================//
     //
 
@@ -154,35 +157,24 @@ void RBM::update(double rate, vector<vector<double>> persistence = vector<vector
         for(int i = 0; i < n_visible; ++i)
             vbias[i] += rate * (input[k][i] - nv_samples[k][i]) / input.size();
     }
-
 }
 
-void RBM::reconstruct(vector<int>& v, vector<double>& reconstructed_v) {
-    vector<double> h(n_hidden, 0);
-    double pre_sigmoid_activation;
+void RBM::reconstruct(vector<vector<double>>& v, vector<vector<double>>& reconstructed_v) {
+    if(reconstructed_v.empty())
+        reconstructed_v = vector<vector<double>>(v.size(), vector<double>(v[0].size(), 0));
+    vector<vector<double>> h;
 
-  for(int i=0; i<n_hidden; i++) {
-    h[i] = propup(v, W[i], hbias[i]);
-  }
+    dot(v, weights, h, hbias);
 
-  for(int i=0; i<n_visible; i++) {
-    pre_sigmoid_activation = 0.0;
-    for(int j=0; j<n_hidden; j++) {
-      pre_sigmoid_activation += W[j][i] * h[j];
-    }
-    pre_sigmoid_activation += vbias[i];
-
-    reconstructed_v[i] = sigmoid(pre_sigmoid_activation);
-  }
-
-  delete[] h;
+    vector<vector<double>> T;
+    transpose(weights, T);
+    dot(h, T, reconstructed_v, vbias);
 }
 
 
 void test_rbm() {
   double learning_rate = 0.1;
   int training_epochs = 1000;
-  int k = 1;
   
   int n_visible = 6;
   int n_hidden = 3;
@@ -199,13 +191,11 @@ void test_rbm() {
 
 
   // construct RBM
-  RBM rbm(n_visible, n_hidden, train_X, vector<vector<double>>{}, vector<vector<double>>{});
+  RBM rbm(n_visible, n_hidden, train_X, vector<double>(), vector<double>());
 
   // train
     for(int epoch=0; epoch<training_epochs; epoch++) {
-        for(int i=0; i<train_N; i++) {
-            rbm.update(learning_rate);
-        }
+        rbm.update(learning_rate);
     }
 
   // test data
@@ -213,20 +203,19 @@ void test_rbm() {
     {1, 1, 0, 0, 0, 0},
     {0, 0, 0, 1, 1, 0}
   };
-  double reconstructed_X[2][6];
 
 
+  vector<vector<double>> rec;
   // test
-  for(int i=0; i<test_N; i++) {
-    rbm.reconstruct(test_X[i], reconstructed_X[i]);
-    for(int j=0; j<n_visible; j++) {
-      printf("%.5f ", reconstructed_X[i][j]);
-    }
+    rbm.reconstruct(test_X, rec);
+  for(auto vec: rec) {
+    for(auto d: vec)
+        cout << d << " ";
     cout << endl;
   }
-
 }
 
 int main() {
+    test_rbm();
     return 0;
 }
