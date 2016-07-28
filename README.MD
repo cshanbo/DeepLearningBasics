@@ -13,4 +13,8 @@ This project contains Machine Learning basics wrote by myself
         3. ReLU
 
 2. Multi-layer Perceptron (Feedforward NN)
-    1. hiddenlayer done
+    1. Single hidden layer MLP
+    2. mini-batch supported
+
+3. Retricted Boltzmann Machine
+    1. First commit, bug fixing
