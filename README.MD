@@ -18,3 +18,4 @@ This project contains Machine Learning basics wrote by myself
 
 3. Retricted Boltzmann Machine
     1. First commit, bug fixing
+    2. RBM done
