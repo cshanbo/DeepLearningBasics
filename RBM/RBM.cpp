@@ -4,7 +4,7 @@ Program: RBM cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-27 11:03:50
-Last modified: 2016-07-28 16:37:13
+Last modified: 2016-07-29 10:17:41
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -149,7 +149,7 @@ void RBM::update(double rate, vector<vector<double>> persistence = vector<vector
     for(unsigned int k = 0; k < input.size(); ++k) {
         for(int i = 0; i < n_hidden; ++i) {
             for(int j = 0; j < n_visible; ++j) {
-                weights[j][i] += rate * (ph_samples[k][i] * input[k][j] - nh_means[k][i] * nv_samples[k][j]) / input.size();
+                weights[j][i] += rate * (ph_means[k][i] * input[k][j] - nh_means[k][i] * nv_samples[k][j]) / input.size();
             }
             hbias[i] += rate * (ph_samples[k][i] - nh_means[k][i]) / input.size();
         }
@@ -165,8 +165,8 @@ void RBM::reconstruct(vector<vector<double>>& v, vector<vector<double>>& reconst
     vector<vector<double>> h;
 
     dot(v, weights, h, hbias);
-
     vector<vector<double>> T;
+
     transpose(weights, T);
     dot(h, T, reconstructed_v, vbias);
     for(auto& vec: reconstructed_v)
@@ -177,7 +177,7 @@ void RBM::reconstruct(vector<vector<double>>& v, vector<vector<double>>& reconst
 
 void test_rbm() {
   double learning_rate = 0.1;
-  int training_epochs = 1000;
+  int training_epochs = 10000;
   
   int n_visible = 6;
   int n_hidden = 3;
@@ -189,7 +189,10 @@ void test_rbm() {
     {1, 1, 1, 0, 0, 0},
     {0, 0, 1, 1, 1, 0},
     {0, 0, 1, 0, 1, 0},
-    {0, 0, 1, 1, 1, 0}
+    {0, 0, 1, 1, 1, 0}, 
+    {1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 1, 1, 0}, 
+    {1, 0, 0, 0, 0, 0}
   };
 
 
@@ -204,18 +207,18 @@ void test_rbm() {
   // test data
   vector<vector<double>> test_X = {
     {1, 1, 0, 0, 0, 0},
-    {0, 0, 0, 1, 1, 0}
+    {0, 0, 0, 1, 1, 0}, 
+    {1, 0, 0, 0, 0, 0}
   };
-
-
+  cout << "===weighs====" << endl;
+  print(rbm.weights);
+  cout << "===inputs===="<< endl;
+    print(test_X);
+    cout << "===recons==="<< endl;
   vector<vector<double>> rec;
   // test
     rbm.reconstruct(test_X, rec);
-  for(auto vec: rec) {
-    for(auto d: vec)
-        cout << d << " ";
-    cout << endl;
-  }
+    print(rec);
 }
 
 int main() {

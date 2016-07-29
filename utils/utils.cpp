@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-28 08:36:12
+Last modified: 2016-07-28 17:21:23
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -20,7 +20,7 @@ double randRange(double fMin,  double fMax) {
 }
 
 double sigmoid(double x) {
-    return 1.0 / (1.0 + exp(x));
+    return 1.0 / (1.0 + exp(-x));
 }
 
 int maxIndex(vector<double>& vec) {

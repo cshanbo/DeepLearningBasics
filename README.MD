@@ -8,9 +8,9 @@ This project contains Machine Learning basics wrote by myself
     1. Hiddenlayer for mlp (feedforward neural network)
     2. could be used anywhere you want
     3. activate function includes:
-        1. tanh
-        2. sigmoid
-        3. ReLU
+        1. tanh (default)
+        2. sigmoid (update fuc need to be changed)
+        3. ReLU (update fuc need to be changed)
 
 2. Multi-layer Perceptron (Feedforward NN)
     1. Single hidden layer MLP
