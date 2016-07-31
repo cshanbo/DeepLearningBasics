@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-28 17:21:23
+Last modified: 2016-07-30 18:54:27
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -119,4 +119,15 @@ void transpose(vector<vector<double>> src, vector<vector<double>> &tgt) {
     for(unsigned int i = 0; i < src.size(); ++i)
         for(unsigned int j = 0; j < src[0].size(); ++j)
             tgt[j][i] = src[i][j];
+}
+
+double cosine(vector<double>& v1, vector<double>& v2) {
+    assert(v1.size() == v2.size());
+    double ret = 0, v1_l = 0, v2_l = 0;
+    for(unsigned int i = 0; i < v1.size(); ++i) {
+        ret += v1[i] * v2[i];
+        v1_l += v1[i] * v1[i];
+        v2_l += v2[i] * v2[i];
+    }
+    return ret / sqrt(v1_l) / sqrt(v2_l);
 }

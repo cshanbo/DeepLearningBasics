@@ -36,4 +36,6 @@ void string_replace(string &, const string &, const string &);
 
 void transpose(vector<vector<double>>, vector<vector<double>> &);
 
+double cosine(vector<double>&, vector<double>&);
+
 #endif

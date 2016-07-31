@@ -4,7 +4,7 @@ Program: RBM cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-27 11:03:50
-Last modified: 2016-07-29 10:17:41
+Last modified: 2016-07-30 19:08:29
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -120,8 +120,6 @@ void RBM::update(double rate, vector<vector<double>> persistence = vector<vector
     vector<vector<double>> ph_samples(vector<vector<double>>(input.size(), vector<double>(n_hidden, 0)));
 
     sampleHGivenV(ph_samples, pre_sigmoid_ph, ph_means, input);
-    //=======================//
-    //
 
     if(persistence.empty())
         chain_start = ph_samples;
@@ -176,8 +174,6 @@ void RBM::reconstruct(vector<vector<double>>& v, vector<vector<double>>& reconst
 
 
 void test_rbm() {
-  double learning_rate = 0.1;
-  int training_epochs = 10000;
   
   int n_visible = 6;
   int n_hidden = 3;
@@ -200,6 +196,8 @@ void test_rbm() {
   RBM rbm(n_visible, n_hidden, train_X, vector<double>(), vector<double>());
 
   // train
+  double learning_rate = 0.1;
+  int training_epochs = 50000;
     for(int epoch=0; epoch<training_epochs; epoch++) {
         rbm.update(learning_rate);
     }
@@ -217,8 +215,14 @@ void test_rbm() {
     cout << "===recons==="<< endl;
   vector<vector<double>> rec;
   // test
+    //rbm.reconstruct(test_X, rec);
     rbm.reconstruct(test_X, rec);
     print(rec);
+
+    double ret = 0;
+    for(unsigned int i = 0; i < test_X.size(); ++i)
+        ret += cosine(test_X[i], rec[i]);
+    cout << "Average cosine similarity: " << ret / test_X.size() << endl;
 }
 
 int main() {
