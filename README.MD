@@ -1,5 +1,14 @@
 This project contains Machine Learning basics wrote by myself
 
+## About Input
+
+1. The input of each model is a double matrix
+2. If using batch GD, please set the input as the whole training data
+2. If using SGD, please set the input as one training instance per time
+4. If using SGD with mini-batch, please set the input as one batch per time
+
+## Models
+
 1. Logistic Regression
     1. Multi-class Logistic Regression (2-class also supported)
     2. Written in C++ 11
@@ -19,3 +28,6 @@ This project contains Machine Learning basics wrote by myself
 3. Retricted Boltzmann Machine
     1. First commit, bug fixing
     2. RBM done
+
+4. Autoencoder
+    1. done
