@@ -4,7 +4,7 @@ Program: AE cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-08-01 09:28:54
-Last modified: 2016-08-01 13:59:27
+Last modified: 2016-08-01 14:42:47
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -15,9 +15,9 @@ GCC version: 4.9.3
 #include "../include/autoencoder.h"
 #include "../include/utils.h"
 
-Autoencoder::Autoencoder() {};
+Autoencoder::Autoencoder() {}
 
-Autoencoder::~Autoencoder() {};
+Autoencoder::~Autoencoder() {}
 
 Autoencoder::Autoencoder(vector<vector<double>> input, int n_visible, int n_hidden) {
     this->n_hidden = n_hidden;
@@ -48,6 +48,7 @@ void Autoencoder::getReconstructedInput(vector<vector<double>>& hidden, vector<v
 }
 
 void Autoencoder::getCorruptedInput(vector<vector<double>> input, vector<vector<double>>& cVec, double corrupt) {
+    // sample 
     if(cVec.empty())
         cVec = input;
     for(unsigned int i = 0; i < input.size(); ++i)
