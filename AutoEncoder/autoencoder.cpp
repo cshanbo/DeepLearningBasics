@@ -4,7 +4,7 @@ Program: AE cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-08-01 09:28:54
-Last modified: 2016-08-01 12:25:44
+Last modified: 2016-08-01 13:59:27
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -105,6 +105,65 @@ void Autoencoder::update(double corrupt, double rate) {
                 weights[i][j] += rate * (lh[k][j] * tilde_x[k][i] + lv[k][i] * y[k][j]) / input.size();
 }
 
+void Autoencoder::reconstruct(vector<vector<double>> &x, vector<vector<double>>& rec) {
+    vector<vector<double>> y;
+    getHiddenValues(x, y);
+    getReconstructedInput(y, rec);
+}
+
+void test_dA() {
+  srand(0);
+  
+  double learning_rate = 0.1;
+  double corruption_level = 0.3;
+  int training_epochs = 100;
+
+  int n_visible = 20;
+  int n_hidden = 5;
+
+  // training data
+  vector<vector<double>> train_X = {
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0}
+  };
+
+  // construct dA
+  Autoencoder da(train_X, n_visible, n_hidden);
+
+  // train
+  for(int epoch=0; epoch<training_epochs; epoch++) {
+      da.update(corruption_level, learning_rate);
+  }
+  vector<vector<double>> test_X = {
+    {1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0}
+  };
+  vector<vector<double>> reconstructed_X;
+
+
+  // test
+    da.reconstruct(train_X, reconstructed_X);
+    //for(auto vec: reconstructed_X) {
+    //    for(auto d: vec)
+    //        cout << d << " ";
+    //    cout << endl;
+    //}
+    double ret = 0;
+    for(unsigned int i = 0; i < train_X.size(); ++i)
+        ret += cosine(train_X[i], reconstructed_X[i]);
+    cout << "averaget cosine similarity: " << ret / train_X.size() << endl;
+
+}
+
 int main() {
+    test_dA();
     return 0;
 }

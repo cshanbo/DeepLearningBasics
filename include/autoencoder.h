@@ -35,6 +35,8 @@ public:
     void getCorruptedInput(vector<vector<double>>, vector<vector<double>>&, double);
 
     void update(double, double);
+
+    void reconstruct(vector<vector<double>>&, vector<vector<double>>&);
 };
 
 #endif
