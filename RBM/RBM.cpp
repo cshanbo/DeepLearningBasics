@@ -4,7 +4,7 @@ Program: RBM cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-27 11:03:50
-Last modified: 2016-07-30 19:08:29
+Last modified: 2016-08-01 10:04:17
 GCC version: 4.9.3
 ***********************************************************/
 
@@ -225,7 +225,7 @@ void test_rbm() {
     cout << "Average cosine similarity: " << ret / test_X.size() << endl;
 }
 
-int main() {
-    test_rbm();
-    return 0;
-}
+//int main() {
+//    test_rbm();
+//    return 0;
+//}
