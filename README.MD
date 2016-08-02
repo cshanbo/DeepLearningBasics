@@ -12,7 +12,6 @@ This project contains Machine Learning basics wrote by myself
 1. Logistic Regression
     1. Multi-class Logistic Regression (2-class also supported)
     2. Written in C++ 11
-
 2. Hiddenlayer
     1. Hiddenlayer for mlp (feedforward neural network)
     2. could be used anywhere you want
@@ -20,15 +19,12 @@ This project contains Machine Learning basics wrote by myself
         1. tanh (default)
         2. sigmoid (update fuc need to be changed)
         3. ReLU (update fuc need to be changed)
-
 2. Multi-layer Perceptron (Feedforward NN)
     1. Single hidden layer MLP
     2. mini-batch supported
-
 3. Retricted Boltzmann Machine
     1. First commit, bug fixing
     2. RBM done
-
 4. Autoencoder
     1. done
 5. CNN
