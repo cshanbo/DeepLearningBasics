@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-07-26 16:46:23
+Last modified: 2016-08-02 10:12:30
 GCC version: 4.9.3
 */
 
@@ -21,6 +21,7 @@ LogisticRegression::LogisticRegression() {}
 
 LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, int out_d) {
     //init weights as all 0
+
     n_in = in_d;
     n_out = out_d;
     this->input = input;
