@@ -31,3 +31,5 @@ This project contains Machine Learning basics wrote by myself
 
 4. Autoencoder
     1. done
+5. CNN
+    1. to be done
