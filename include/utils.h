@@ -12,7 +12,17 @@ GCC version: 4.7.3
 
 #include <string>
 #include <vector>
+
 using namespace std;
+
+template<typename T>
+using matrix = vector<vector<T>>;
+
+template<typename T>
+using tensor3 = vector<matrix<T>>;
+
+template<typename T>
+using tensor4 = matrix<matrix<T>>;
 
 double randRange(double, double);
 
@@ -37,5 +47,7 @@ void string_replace(string &, const string &, const string &);
 void transpose(vector<vector<double>>, vector<vector<double>> &);
 
 double cosine(vector<double>&, vector<double>&);
+
+double maxPooling(matrix<double>&);
 
 #endif

@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-08-02 10:12:30
+Last modified: 2016-08-02 11:45:21
 GCC version: 4.9.3
 */
 

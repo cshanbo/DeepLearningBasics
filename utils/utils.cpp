@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-07-30 18:54:27
+Last modified: 2016-08-02 15:32:06
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -130,4 +130,14 @@ double cosine(vector<double>& v1, vector<double>& v2) {
         v2_l += v2[i] * v2[i];
     }
     return ret / sqrt(v1_l) / sqrt(v2_l);
+}
+
+double maxPooling(matrix<double>& m) {
+    assert(!m.empty());
+    double r = m[0][0];
+    for(auto vec: m)
+        for(auto d: vec)
+            if(d > r)
+                r = d;
+    return r;
 }
