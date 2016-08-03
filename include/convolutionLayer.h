@@ -8,8 +8,8 @@ Last modified: 2016-07-27 10:18:29
 GCC version: 4.9.3
 ***********************************************************/
 
-#ifndef _CONVOLUTION_H_
-#define _CONVOLUTION_H_
+#ifndef _CONVOLUTION_LAYER_H_
+#define _CONVOLUTION_LAYER_H_
 
 #include <vector>
 #include <tuple>
@@ -22,9 +22,10 @@ using namespace std;
  * theano.tensor.nnet.conv2d,  which is the most common one in almost all of the recent published convolutional models. In this operation,  each output feature map is connected to each input feature map by a different 2D filter,  and its value is the sum of the individual convolution of all inputs through the corresponding filter.
  * */
 
-class CNN {
+class ConvolutionLayer {
 public:
     tensor4<double> input;
+
     tensor4<double> weights;
 
     //the 4 dims of input
@@ -38,14 +39,17 @@ public:
 
     vector<double> bias;
 
-    CNN();
-    ~CNN();
-    CNN(tensor4<double>, tuple<int, int, int, int>, tuple<int, int, int, int>, tuple<int, int> = make_tuple(2, 2));
+    ConvolutionLayer();
+
+    ~ConvolutionLayer();
+
+    ConvolutionLayer(tensor4<double>, tuple<int, int, int, int>, tuple<int, int, int, int>, tuple<int, int> = make_tuple(2, 2));
 
     void conv2d(tensor4<double>&, tensor4<double>&, tuple<int, int, int, int>&, tuple<int, int, int, int>&, tensor4<double>&, bool = true);
 
     void poolOut(tensor4<double>&, tensor4<double>&, pair<int, int>, bool = true);
 
+    void update(double rate, vector<double>&);
 };
 
 #endif

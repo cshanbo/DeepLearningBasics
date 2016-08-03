@@ -1,10 +1,10 @@
 //coding:utf-8
 /*****************************************
-Program: CNN
+Program: ConvolutionLayer
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-02 10:21:52
-Last modified: 2016-08-03 19:52:14
+Last modified: 2016-08-03 22:03:04
 GCC version: 4.9.3
 *****************************************/
 
@@ -16,16 +16,19 @@ GCC version: 4.9.3
 #include <cmath>
 
 #include "../include/LR.h"
+#include "../include/HiddenLayer.h"
 #include "../include/utils.h"
-#include "../include/CNN.h"
+#include "../include/ConvolutionLayer.h"
 
 using namespace std;
 
-CNN::CNN() {}
+//this is convolutional layer
 
-CNN::~CNN() {}
+ConvolutionLayer::ConvolutionLayer() {}
 
-CNN::CNN(tensor4<double> input, tuple<int, int, int, int> inshape, tuple<int, int, int, int> fshape, tuple<int, int> pshape) {
+ConvolutionLayer::~ConvolutionLayer() {}
+
+ConvolutionLayer::ConvolutionLayer(tensor4<double> input, tuple<int, int, int, int> inshape, tuple<int, int, int, int> fshape, tuple<int, int> pshape) {
     assert(get<1>(inshape) == get<1>(fshape));
     this->input = input;
     this->pool_size = pshape;
@@ -46,7 +49,7 @@ CNN::CNN(tensor4<double> input, tuple<int, int, int, int> inshape, tuple<int, in
     this->bias = vector<double>(get<0>(filter_shape), 0);
 }
 
-void CNN::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, int, int, int>& filter_shape, tuple<int, int, int, int>& input_shape, tensor4<double>& output, bool full_conv) {
+void ConvolutionLayer::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, int, int, int>& filter_shape, tuple<int, int, int, int>& input_shape, tensor4<double>& output, bool full_conv) {
     //the pair parameter is a little bit unfriend, because pair->first is the x-axis while people usually traverse a matrix by row (y-axis, pair.second) first. This could be handled in following updates
     //
     assert(input.size() == get<0>(input_shape) && input[0].size() == get<1>(input_shape) && input[0][0].size() == get<2>(input_shape) && input[0][0][0].size() == get<1>(input_shape));
@@ -87,7 +90,7 @@ void CNN::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, in
     return;
 }
 
-void CNN::poolOut(tensor4<double>& conv_out, tensor4<double>& output, pair<int, int> pool_size, bool ignore_border) {
+void ConvolutionLayer::poolOut(tensor4<double>& conv_out, tensor4<double>& output, pair<int, int> pool_size, bool ignore_border) {
     //pool the output using max pooling
     //ignore the border
     int prow = pool_size.first, pcol = pool_size.second;
@@ -101,16 +104,24 @@ void CNN::poolOut(tensor4<double>& conv_out, tensor4<double>& output, pair<int, 
     } else {
         //TODO
     }
+    //
+    //tanh
+    for(auto &t3: output)
+        for(auto &mt: t3)
+            for(auto &v: mt)
+                for(auto &d: v)
+                    d = tanh(d);
 }
 
-int main() {
-    matrix<double> input = {{1, 2, 3, 4}, {2, 3, 4, 1}, {3, 1, 2, 0}};
-    matrix<double> w = {
-        {2, 0, 5}, 
-        {1, 2, 1}, 
-    };
-    matrix<double> ret;
-    dot(input, w, ret, make_pair<int, int>(1, 0), make_pair<int, int>(2, 1));
-    print(ret);
-    return 0;
-}
+
+//int main() {
+//    matrix<double> input = {{1, 2, 3, 4}, {2, 3, 4, 1}, {3, 1, 2, 0}};
+//    matrix<double> w = {
+//        {2, 0, 5}, 
+//        {1, 2, 1}, 
+//    };
+//    matrix<double> ret;
+//    dot(input, w, ret, make_pair<int, int>(1, 0), make_pair<int, int>(2, 1));
+//    print(ret);
+//    return 0;
+//}
