@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-03 14:48:55
+Last modified: 2016-08-03 19:49:45
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -179,4 +179,5 @@ double dotElement(matrix<double>& m1, matrix<double>& m2, pair<int, int> p1, pai
             if(p1.second + i < m1.size() && p1.first + j < m1[0].size())
                 ret += m1[p1.second + i][p1.first + j] * m2[i][j];
     return ret;
+    //if ignoring the border
 }

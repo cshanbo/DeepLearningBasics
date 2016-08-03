@@ -4,7 +4,7 @@ Program: CNN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-02 10:21:52
-Last modified: 2016-08-03 14:54:31
+Last modified: 2016-08-03 19:52:14
 GCC version: 4.9.3
 *****************************************/
 
@@ -47,6 +47,8 @@ CNN::CNN(tensor4<double> input, tuple<int, int, int, int> inshape, tuple<int, in
 }
 
 void CNN::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, int, int, int>& filter_shape, tuple<int, int, int, int>& input_shape, tensor4<double>& output, bool full_conv) {
+    //the pair parameter is a little bit unfriend, because pair->first is the x-axis while people usually traverse a matrix by row (y-axis, pair.second) first. This could be handled in following updates
+    //
     assert(input.size() == get<0>(input_shape) && input[0].size() == get<1>(input_shape) && input[0][0].size() == get<2>(input_shape) && input[0][0][0].size() == get<1>(input_shape));
     assert(weights.size() == get<0>(filter_shape) && weights[0].size() == get<1>(filter_shape) && weights[0][0].size() == get<2>(filter_shape) && weights[0][0][0].size() == get<1>(filter_shape));
 
@@ -55,11 +57,18 @@ void CNN::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, in
     if(output.empty())
         output = tensor4<double>(input.size(), tensor3<double>(get<0>(filter_shape), matrix<double>(fm_row, vector<double>(fm_col, 0))));
 
-    // j is the jth output feature map
+    // j is the jth output feature map. size is the 0th dim of weights
+    // k is the kth input image of a batch. size is the 0th dim of input
+    // i is the ith input feature map (channel). size is the 1th dim of input
+    // each image has input[0].size() channels
+    // so the weights should work on each of them
+    // row is the row of an input feature map of input
+    // col is the col of an input feature map of input 
+    // each step, using a dot function to generate the value
+    // take the average as the result
     if(full_conv)
-        for(unsigned int j = 0; j < input[0][0].size(); ++j)
+        for(unsigned int j = 0; j < weights.size(); ++j)
             for(unsigned int k = 0; k < input.size(); ++k)
-                //k is the kth input image of the minibatch
                 for(unsigned int i = 0; i < input[0].size(); ++i)
                     //i is the ith input feature map 
                     //input[k][i] is a image matrix
@@ -72,6 +81,7 @@ void CNN::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, in
                             output[k][j][row][col] += temp / k;
                         }
     else {
+        //if ignoring the border
         //TODO
     }
     return;
@@ -83,9 +93,11 @@ void CNN::poolOut(tensor4<double>& conv_out, tensor4<double>& output, pair<int, 
     int prow = pool_size.first, pcol = pool_size.second;
     output = tensor4<double>(conv_out.size(), tensor3<double>(conv_out[0].size(), matrix<double>(conv_out[0][0].size() / prow, vector<double>(conv_out[0][0][0].size() / pcol, 0))));
     if(ignore_border) {
-        for(int i = 0; i < output.size(); ++i)
-            for(int j = 0; j < output[0].size(); ++j)
-                output[i][j] = maxPooling(conv_out, make_pair<int, int>(j * pool_size.second, i * pool_size.first), make_pair<int, int>(j * pool_size.second + pcol, i * pool_size.first + prow));
+        for(unsigned int m = 0; m < output.size(); ++m)
+            for(unsigned int n = 0; n < output[0].size(); ++n)
+                for(unsigned int i = 0; i < output[0][0].size(); ++i)
+                    for(unsigned int j = 0; j < output[0][0][0].size(); ++j)
+                        output[m][n][i][j] = maxPooling(conv_out[m][n], make_pair<int, int>(j * pool_size.second, i * pool_size.first), make_pair<int, int>(j * pool_size.second + pcol, i * pool_size.first + prow));
     } else {
         //TODO
     }
