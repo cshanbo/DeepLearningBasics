@@ -28,4 +28,7 @@ This project contains Machine Learning basics wrote by myself
 4. Autoencoder
     1. done
 5. CNN
-    1. to be done
+    1. Convolutional layer
+    2. need to construct a complete CNN
+    3. need to complete the update function
+        1. the most important step is to calculate the gradient of each layer
