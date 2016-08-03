@@ -42,7 +42,10 @@ public:
     ~CNN();
     CNN(tensor4<double>, tuple<int, int, int, int>, tuple<int, int, int, int>, tuple<int, int> = make_tuple(2, 2));
 
-    void conv2d(tensor4<double>&, tensor4<double>&, tensor4<double>&, tensor4<double>&);
+    void conv2d(tensor4<double>&, tensor4<double>&, tuple<int, int, int, int>&, tuple<int, int, int, int>&, tensor4<double>&, bool = true);
+
+    void poolOut(tensor4<double>&, tensor4<double>&, pair<int, int>, bool = true);
+
 };
 
 #endif

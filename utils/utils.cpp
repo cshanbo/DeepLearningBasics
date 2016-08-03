@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-02 15:32:06
+Last modified: 2016-08-03 14:48:55
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -14,6 +14,7 @@ std = C++ 11
 #include <cstdlib>
 #include <cassert>
 #include <cmath>
+#include <utility>
 double randRange(double fMin,  double fMax) {
     double f = (double)rand() / RAND_MAX;
     return fMin + f * (fMax - fMin);
@@ -51,6 +52,24 @@ void dot(vector<vector<double>>& input, vector<vector<double>>& matrix, vector<v
             for(unsigned int j = 0; j < ret[0].size(); j++)
                 ret[i][j] += bias[j];
     return;
+}
+
+void dot(vector<vector<double>>& input, vector<vector<double>>& matrix, vector<vector<double>>& ret, pair<int, int> p1, pair<int, int> p2, vector<double> bias) {
+    assert(!(input.empty() || matrix.empty()));
+    assert(!((unsigned int)(p2.first - p1.first + 1) != matrix.size() || (bias.size() != 0 && matrix[0].size() != bias.size())));
+
+    //p1 is the corrdination of left-top point of a silde in a matrix. p1.first is the x_axis (col),  p1.second is the y_axis (row), p2 is the corrdination of right-bottom point of a slide in a matrix.
+    
+    ret = vector<vector<double>>(p2.second - p1.second + 1, vector<double>(matrix[0].size(), 0));
+    for(int i = p1.second; i <= p2.second; ++i)
+        for(unsigned int j = 0; j < matrix[0].size(); ++j)
+            for(int k = p1.first; k <= p2.first; ++k)
+                ret[i - p1.second][j] += input[i][k] * matrix[k - p1.first][j];
+
+    if(bias.size() != 0)
+        for(unsigned int i = 0; i < ret.size(); ++i)
+            for(unsigned int j = 0; j < ret[0].size(); ++j)
+                ret[i][j] += bias[j];
 }
 
 void print(vector<vector<double>> vec) {
@@ -132,12 +151,32 @@ double cosine(vector<double>& v1, vector<double>& v2) {
     return ret / sqrt(v1_l) / sqrt(v2_l);
 }
 
-double maxPooling(matrix<double>& m) {
+double maxPooling(matrix<double>& m, pair<int, int> p1, pair<int, int> p2) {
     assert(!m.empty());
-    double r = m[0][0];
-    for(auto vec: m)
-        for(auto d: vec)
-            if(d > r)
-                r = d;
+    double r = m[p1.second][p1.first];
+    for(int i = 0; i <= p2.second; ++i)
+        for(int j = 0; j <= p2.first; ++j)
+            if(r < m[i][j])
+                r = m[i][j];
     return r;
+}
+
+double dotElement(matrix<double>& m1, matrix<double>& m2) {
+    assert(!m1.empty() && !m2.empty() && m1.size() == m2.size() && m1[0].size() == m2[0].size());
+    double ret = 0;
+    for(unsigned int i = 0; i < m1.size(); ++i)
+        for(unsigned int j = 0; j < m1[0].size(); ++j)
+            ret += m1[i][j] * m2[i][j];
+    return ret;
+}
+
+double dotElement(matrix<double>& m1, matrix<double>& m2, pair<int, int> p1, pair<int, int> p2) {
+    //the definition of p1 p2 is exactly same as the dot function
+    assert(!m1.empty() && !m2.empty() && p2.second - p1.second + 1 == m2.size() && p2.first - p2.first + 1 == m2[0].size());
+    double ret = 0;
+    for(unsigned int i = 0; i < m2.size(); ++i)
+        for(unsigned int j = 0; j < m2[0].size(); ++j)
+            if(p1.second + i < m1.size() && p1.first + j < m1[0].size())
+                ret += m1[p1.second + i][p1.first + j] * m2[i][j];
+    return ret;
 }

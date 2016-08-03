@@ -12,6 +12,7 @@ GCC version: 4.7.3
 
 #include <string>
 #include <vector>
+#include <utility>
 
 using namespace std;
 
@@ -26,9 +27,15 @@ using tensor4 = matrix<matrix<T>>;
 
 double randRange(double, double);
 
-void dot(vector<vector<double>>&, vector<vector<double>>&, vector<vector<double>>&, vector<double> = vector<double>{});
+void dot(matrix<double>&, matrix<double>&, matrix<double>&, vector<double> = vector<double>{});
 
-void print(vector<vector<double>>);
+void dot(matrix<double>&, matrix<double>&, matrix<double>&, pair<int, int> p1, pair<int, int> p2, vector<double> = vector<double>{});
+
+double dotElement(matrix<double>&, matrix<double>&);
+
+double dotElement(matrix<double>&, matrix<double>&, pair<int, int>, pair<int, int>);
+
+void print(matrix<double>);
 
 int maxIndex(vector<double>&);
 
@@ -48,6 +55,6 @@ void transpose(vector<vector<double>>, vector<vector<double>> &);
 
 double cosine(vector<double>&, vector<double>&);
 
-double maxPooling(matrix<double>&);
+double maxPooling(matrix<double>&, pair<int, int>, pair<int, int>);
 
 #endif
