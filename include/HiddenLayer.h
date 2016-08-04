@@ -13,22 +13,24 @@ GCC version: 4.7.3
 
 #include <iostream>
 #include <vector>
+#include "../include/utils.h"
+
 using namespace std;
 
 class HiddenLayer {
 public:
     int n_in;       //dimension of input
     int n_out;	    //dimension of output
-    vector<vector<double>> weights;     //a double matrix
+    matrix<double> weights;     //a double matrix
     vector<double> bias;                //a double vector
-    vector<vector<double>> input;       //a double matrix
-    vector<vector<double>> output;     //a double matrix
+    matrix<double> input;       //a double matrix
+    matrix<double> output;     //a double matrix
 
     void activation(vector<double>&, int);
-    void activation(vector<vector<double>>&, int);
+    void activation(matrix<double>&, int);
 
     HiddenLayer();
-    HiddenLayer(int, int, vector<vector<double>>, int);     //n_in, n_out, input, activationType
+    HiddenLayer(int, int, matrix<double>, int);     //n_in, n_out, input, activationType
     ~HiddenLayer();
 
     void update(double, vector<int>);

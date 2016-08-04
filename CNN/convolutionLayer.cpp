@@ -4,7 +4,7 @@ Program: ConvolutionLayer
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-02 10:21:52
-Last modified: 2016-08-03 22:03:04
+Last modified: 2016-08-04 09:22:55
 GCC version: 4.9.3
 *****************************************/
 
@@ -18,7 +18,7 @@ GCC version: 4.9.3
 #include "../include/LR.h"
 #include "../include/HiddenLayer.h"
 #include "../include/utils.h"
-#include "../include/ConvolutionLayer.h"
+#include "../include/convolutionLayer.h"
 
 using namespace std;
 
@@ -111,6 +111,7 @@ void ConvolutionLayer::poolOut(tensor4<double>& conv_out, tensor4<double>& outpu
             for(auto &v: mt)
                 for(auto &d: v)
                     d = tanh(d);
+    this->output = output;
 }
 
 

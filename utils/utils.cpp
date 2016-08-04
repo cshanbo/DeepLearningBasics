@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-03 19:49:45
+Last modified: 2016-08-04 09:18:06
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -180,4 +180,15 @@ double dotElement(matrix<double>& m1, matrix<double>& m2, pair<int, int> p1, pai
                 ret += m1[p1.second + i][p1.first + j] * m2[i][j];
     return ret;
     //if ignoring the border
+}
+
+void flatten2(tensor4<double>& t, matrix<double>& r) {
+    r = matrix<double>(t.size(), vector<double>(t[0].size() * t[0][0].size() * t[0][0][0].size(), 0));
+    for(unsigned int i = 0; i < t.size(); ++i) {
+        int idx = 0;
+        for(auto t2: t[i])
+            for(auto v: t2)
+                for(auto d: v)
+                    r[i][idx++] = d;
+    }
 }

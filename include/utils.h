@@ -57,4 +57,6 @@ double cosine(vector<double>&, vector<double>&);
 
 double maxPooling(matrix<double>&, pair<int, int>, pair<int, int>);
 
+void flatten2(tensor4<double>&, matrix<double>&);
+
 #endif

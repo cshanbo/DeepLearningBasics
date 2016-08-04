@@ -26,6 +26,8 @@ class ConvolutionLayer {
 public:
     tensor4<double> input;
 
+    tensor4<double> output;
+
     tensor4<double> weights;
 
     //the 4 dims of input
