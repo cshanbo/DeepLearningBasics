@@ -35,6 +35,7 @@ void print(matrix<T> vec) {
             std::cout << d << " "; 
         std::cout << endl;
     }
+    cout << "==============" << endl;
 }
 
 double randRange(double, double);

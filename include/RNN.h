@@ -16,8 +16,8 @@ using namespace std;
 
 class RNN {
 public:
-    matrix<double> embeddings;
-    matrix<double> wx;
+    matrix<double> embeddings;  //the collection of all word embeddings, shape is the vocab_size + 1 * embedding_dim
+    matrix<double> wx;  //shape is embedding_dim * window_sz 
     matrix<double> wh;
     matrix<double> weights;
 
@@ -38,7 +38,12 @@ public:
 
     void getEmbeddingsFromIndex(matrix<int>&, matrix<double>&);
 
+    void getEmbeddingsFromIndex(tensor3<int>& indexes, tensor3<double>& embs);
+
     void getWindowMatrix(vector<int>&, matrix<int>&, int = 7);
+
+    void minibatch(matrix<int>&, tensor3<int>&, int);
+
 };
 
 #endif

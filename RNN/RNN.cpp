@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-04 14:59:51
+Last modified: 2016-08-04 19:04:22
 GCC version: 4.9.3
 *****************************************/
 
@@ -54,7 +54,7 @@ RNN::RNN(int nh, int nc, int ne, int de, int cs) {
     //
     assert(cs >= 1 && cs % 2 == 1);
     this->embeddings = matrix<double>(ne + 1, vector<double>(de, 0));
-    this->wx = matrix<double>(de, vector<double>(cs, 0));
+    this->wx = matrix<double>(de * cs, vector<double>(nh, 0));
     this->wh = matrix<double>(nh, vector<double>(nh, 0));
     this->weights = matrix<double>(nh, vector<double>(nc, 0));
     this->hbias = vector<double>(nh, 0);
@@ -81,7 +81,7 @@ RNN::RNN(int nh, int nc, int ne, int de, int cs) {
 }
 
 void RNN::getEmbeddingsFromIndex(matrix<int>& indexes, matrix<double>& embs) {
-    embs = matrix<double>(indexes.size(), vector<double>(this->wx.size() * this->wx[0].size(), 0));
+    embs = matrix<double>(indexes.size(), vector<double>(this->wx.size(), 0));
     //indexes:
     //  row number is the number of words in a mini-batch (sentence)
     //  col number is window size
@@ -90,11 +90,41 @@ void RNN::getEmbeddingsFromIndex(matrix<int>& indexes, matrix<double>& embs) {
         int idx = 0;
         for(unsigned int j = 0; j < indexes[0].size(); ++j) {
             if(indexes[i][j] < 0)
-                for(unsigned int k = 0; k < this->wx.size(); k++)
+                for(unsigned int k = 0; k < this->embeddings[0].size(); k++)
                     idx++;
             else
-                for(unsigned int k = 0; k < this->wx.size(); k++)
+                for(unsigned int k = 0; k < this->embeddings[0].size(); k++)
                     embs[i][idx++] = this->embeddings[indexes[i][j]][k];
+        }
+    }
+}
+
+void RNN::getEmbeddingsFromIndex(tensor3<int>& indexes, tensor3<double>& embs) {
+    embs = tensor3<double>();
+    int dim_embed = this->embeddings[0].size();
+    for(unsigned int i = 0; i < indexes.size(); ++i) {
+        matrix<double> temp;
+        for(unsigned int j = 0; j < indexes[i].size(); ++j) {
+            vector<double> one(indexes[i][j].size() * dim_embed, 0);
+            temp.push_back(one);
+        }
+        embs.push_back(temp);
+    }
+    //indexes:
+    //  row number is the number of words in a mini-batch (sentence)
+    //  col number is window size
+    //the ith word of a sentence, one sentence is a mini batch for this example code 
+    for(unsigned int k = 0; k < indexes.size(); ++k) {
+        for(unsigned int i = 0; i < indexes[k].size(); ++i) {
+            int idx = 0;
+            for(unsigned int j = 0; j < indexes[k][i].size(); ++j) {
+                if(indexes[k][i][j] < 0)
+                    for(unsigned int m = 0; m < dim_embed; m++)
+                        idx++;
+                else
+                    for(unsigned int m = 0; m < dim_embed; m++)
+                        embs[k][i][idx++] = this->embeddings[indexes[k][i][j]][m];
+            }
         }
     }
 }
@@ -113,9 +143,21 @@ void RNN::getWindowMatrix(vector<int>& indexes, matrix<int>& out, int w_sz) {
     }
 }
 
+void RNN::minibatch(matrix<int>& window_matrix, tensor3<int>& ret, int back_size) {
+    if(window_matrix.empty())
+        return;
+    ret = tensor3<int>(window_matrix.size(), matrix<int>());
+    for(unsigned int i = 0; i < ret.size(); ++i) {
+        matrix<int> one;
+        for(int j = back_size - 1; j >= 0; --j) {
+            if((int)i - j >= 0) 
+                one.push_back(window_matrix[(int)i - j]);
+        }
+        ret[i] = one;
+    }
+}
+
 void recurrence(matrix<double>& x_input, matrix<double>& weight) {
-    matrix<double> ret;
-    dot(x_input, weight, ret);
 }
 
 int main() {
@@ -135,11 +177,20 @@ int main() {
     };
 
     RNN rnn(3, 3, 10, 9, 7);
-    rnn.embeddings = embeddings;
+    //rnn.embeddings = embeddings;
     rnn.getWindowMatrix(indexes, out);
+    
+    print(out);
+    tensor3<int> ret;
+    rnn.minibatch(out, ret, 4);
+    for(auto mat: ret)
+        print(mat);
+    tensor3<double> embs;
+    cout << "^^^^^" << endl;
 
-    matrix<double> embs;
-    rnn.getEmbeddingsFromIndex(out, embs);
+    rnn.getEmbeddingsFromIndex(ret, embs);
+    for(auto e: embs)
+        print(e);
 
     return 0;
 }
