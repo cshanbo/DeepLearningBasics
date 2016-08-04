@@ -13,6 +13,7 @@ GCC version: 4.7.3
 #include <string>
 #include <vector>
 #include <utility>
+#include <iostream>
 
 using namespace std;
 
@@ -25,6 +26,17 @@ using tensor3 = vector<matrix<T>>;
 template<typename T>
 using tensor4 = matrix<matrix<T>>;
 
+template <typename T>
+void print(matrix<T> vec) {
+    if(vec.empty())
+        std::cout << "empty" << std::endl;
+    for(auto v: vec) {
+        for(auto d: v)
+            std::cout << d << " "; 
+        std::cout << endl;
+    }
+}
+
 double randRange(double, double);
 
 void dot(matrix<double>&, matrix<double>&, matrix<double>&, vector<double> = vector<double>{});
@@ -34,8 +46,6 @@ void dot(matrix<double>&, matrix<double>&, matrix<double>&, pair<int, int> p1, p
 double dotElement(matrix<double>&, matrix<double>&);
 
 double dotElement(matrix<double>&, matrix<double>&, pair<int, int>, pair<int, int>);
-
-void print(matrix<double>);
 
 int maxIndex(vector<double>&);
 

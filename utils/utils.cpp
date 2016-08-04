@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-04 09:18:06
+Last modified: 2016-08-04 14:18:35
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -15,6 +15,7 @@ std = C++ 11
 #include <cassert>
 #include <cmath>
 #include <utility>
+
 double randRange(double fMin,  double fMax) {
     double f = (double)rand() / RAND_MAX;
     return fMin + f * (fMax - fMin);
@@ -72,15 +73,6 @@ void dot(vector<vector<double>>& input, vector<vector<double>>& matrix, vector<v
                 ret[i][j] += bias[j];
 }
 
-void print(vector<vector<double>> vec) {
-    if(vec.empty())
-        cout << "empty" << endl;
-    for(auto v: vec) {
-        for(auto d: v)
-          cout << d << " "; 
-        cout << endl;
-    }
-}
 double L1(vector<vector<double>>& w1) {
     double ret = 0;
     for(auto v: w1)
