@@ -34,3 +34,4 @@ This project contains Machine Learning basics wrote by myself
         1. the most important step is to calculate the gradient of each layer
 6. RNN
     1. Recurrent NN with word embeddings
+    2. An example. mini-batch is all words in a sentence represented with word embeddings
