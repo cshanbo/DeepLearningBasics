@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-04 14:18:35
+Last modified: 2016-08-04 20:32:28
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -183,4 +183,14 @@ void flatten2(tensor4<double>& t, matrix<double>& r) {
                 for(auto d: v)
                     r[i][idx++] = d;
     }
+}
+
+void softmax(vector<double>& vec) {
+    if(vec.empty())
+        return;
+    double sum = 0;
+    for(auto d: vec)
+        sum += exp(d);
+    for(auto &d: vec)
+        d = exp(d) / sum;
 }

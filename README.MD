@@ -32,3 +32,5 @@ This project contains Machine Learning basics wrote by myself
     2. need to construct a complete CNN
     3. need to complete the update function
         1. the most important step is to calculate the gradient of each layer
+6. RNN
+    1. Recurrent NN with word embeddings

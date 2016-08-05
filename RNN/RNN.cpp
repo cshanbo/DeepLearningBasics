@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-04 19:04:22
+Last modified: 2016-08-04 21:51:46
 GCC version: 4.9.3
 *****************************************/
 
@@ -157,7 +157,28 @@ void RNN::minibatch(matrix<int>& window_matrix, tensor3<int>& ret, int back_size
     }
 }
 
-void recurrence(matrix<double>& x_input, matrix<double>& weight) {
+void RNN::recurrence(matrix<double>& x_t, matrix<double>& h_tm1, matrix<double>& h_t, matrix<double> s_t) {
+    matrix<double> temp1, temp2;
+    dot(x_t, this->wx, h_t, temp1);
+    dot(h_tm1, this->wh, temp2, this->hbias);
+    h_t = matrix<double>(temp1.size(), vector<double>(temp1[0].size(), 0));
+    for(unsigned int i = 0; i < temp1.size(); ++i)
+        for(unsigned int j = 0; j < temp1[0].size(); ++j)
+            h_t[i][j] = temp1[i][j] + temp2[i][j];
+    dot(h_t, this->weights, s_t, this->bias);
+    for(auto &vec: s_t)
+        softmax(vec);
+}
+
+//param0: input tensor3, mini-batch
+void scan(tensor3<double>& x, matrix<double>& h, matrix<double>& s) {
+    if(x.empty())
+        return;
+    for(unsigned int i = 0; i < x.size(); ++i) {
+        if(i == 0) {
+            recurrence(x[i], this->h0, s);
+        }
+    }
 }
 
 int main() {
@@ -182,6 +203,7 @@ int main() {
     
     print(out);
     tensor3<int> ret;
+    //get mini batch for bptt
     rnn.minibatch(out, ret, 4);
     for(auto mat: ret)
         print(mat);
