@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-04 21:51:46
+Last modified: 2016-08-05 14:54:43
 GCC version: 4.9.3
 *****************************************/
 
@@ -53,6 +53,12 @@ RNN::RNN(int nh, int nc, int ne, int de, int cs) {
     //embeddings contains all of the word embedding for vocab
     //
     assert(cs >= 1 && cs % 2 == 1);
+    this->nh = nh;
+    this->nc = nc;
+    this->ne = ne;
+    this->de = de;
+    this->cs = cs;
+
     this->embeddings = matrix<double>(ne + 1, vector<double>(de, 0));
     this->wx = matrix<double>(de * cs, vector<double>(nh, 0));
     this->wh = matrix<double>(nh, vector<double>(nh, 0));
@@ -131,6 +137,7 @@ void RNN::getEmbeddingsFromIndex(tensor3<int>& indexes, tensor3<double>& embs) {
 
 void RNN::getWindowMatrix(vector<int>& indexes, matrix<int>& out, int w_sz) {
     //index is a vector, which contains the indexes of words in a sentence sequentially
+    w_sz = this->cs;
     out = matrix<int>(indexes.size(), vector<int>(w_sz, 0));
     for(unsigned int i = 0; i < indexes.size(); ++i) {
         int idx = 0;
@@ -157,26 +164,42 @@ void RNN::minibatch(matrix<int>& window_matrix, tensor3<int>& ret, int back_size
     }
 }
 
-void RNN::recurrence(matrix<double>& x_t, matrix<double>& h_tm1, matrix<double>& h_t, matrix<double> s_t) {
-    matrix<double> temp1, temp2;
-    dot(x_t, this->wx, h_t, temp1);
-    dot(h_tm1, this->wh, temp2, this->hbias);
-    h_t = matrix<double>(temp1.size(), vector<double>(temp1[0].size(), 0));
-    for(unsigned int i = 0; i < temp1.size(); ++i)
-        for(unsigned int j = 0; j < temp1[0].size(); ++j)
-            h_t[i][j] = temp1[i][j] + temp2[i][j];
-    dot(h_t, this->weights, s_t, this->bias);
-    for(auto &vec: s_t)
-        softmax(vec);
-}
-
-//param0: input tensor3, mini-batch
-void scan(tensor3<double>& x, matrix<double>& h, matrix<double>& s) {
+void RNN::recurrence(tensor3<double>& x, tensor3<double>& h, tensor3<double>& s) {
     if(x.empty())
         return;
+    h = tensor3<double>(x.size(), matrix<double>());
+    s = tensor3<double>(x.size(), matrix<double>());
+    //from the first to the last word in a batch
     for(unsigned int i = 0; i < x.size(); ++i) {
         if(i == 0) {
-            recurrence(x[i], this->h0, s);
+            matrix<double> h_1 = matrix<double>(x[i].size(), vector<double>(this->wx[0].size(), 0));
+            matrix<double> temp1, temp2;
+            dot(x[i], this->wx, temp1);
+            dot(h_1, this->wh, temp2, this->hbias);
+
+            h[i] = matrix<double>(temp1.size(), vector<double>(temp1[0].size(), 0));
+            for(unsigned int j = 0; j < temp1.size(); ++j)
+                for(unsigned int k = 0; k < temp1[0].size(); ++k)
+                    h[i][j][k] = temp1[j][k] + temp2[j][k];
+
+            dot(h[i], this->weights, s[i], this->bias);
+            for(auto &v: h[i])
+                softmax(v);
+        } else {
+            //calc h_i from x_i and h_i-1
+            matrix<double> temp1, temp2;
+            matrix<double> first = matrix<double>{x[i][x[i].size() - 1]};
+            dot(first, this->wx, temp1);
+            dot(h[i - 1], this->wh, temp2, this->hbias);
+            h[i] = matrix<double>(temp1.size(), vector<double>(temp1[0].size(), 0));
+            for(unsigned int j = 0; j < temp1.size(); ++j)
+                for(unsigned int k = 0; k < temp1[0].size(); ++k)
+                    h[i][j][k] = temp1[j][k] + temp2[j][k];
+            //calc s_i
+            dot(h[i], this->weights, s[i], this->bias);
+
+            for(auto &v: h[i])
+                softmax(v);
         }
     }
 }
@@ -197,7 +220,7 @@ int main() {
         {9, 9, 9, 9, 9, 9, 9, 9, 9}
     };
 
-    RNN rnn(3, 3, 10, 9, 7);
+    RNN rnn(3, 4, 10, 3, 3);
     //rnn.embeddings = embeddings;
     rnn.getWindowMatrix(indexes, out);
     
@@ -205,14 +228,18 @@ int main() {
     tensor3<int> ret;
     //get mini batch for bptt
     rnn.minibatch(out, ret, 4);
-    for(auto mat: ret)
-        print(mat);
     tensor3<double> embs;
-    cout << "^^^^^" << endl;
 
     rnn.getEmbeddingsFromIndex(ret, embs);
-    for(auto e: embs)
-        print(e);
+
+    for(auto m: embs)
+        print(m);
+    cout << "---------------" << endl;
+
+    tensor3<double> h, s;
+    rnn.recurrence(embs, h, s);
+    for(auto ma: s)
+        print(ma);
 
     return 0;
 }

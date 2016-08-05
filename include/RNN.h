@@ -25,6 +25,12 @@ public:
     vector<double> bias;
     vector<double> h0;
 
+    int nh;
+    int nc;
+    int ne;
+    int de;
+    int cs;
+
     RNN();
     ~RNN();
     /*
@@ -34,7 +40,7 @@ public:
         de :: dimension of the word embeddings
         cs :: word window context size
     */
-    RNN(int nh, int nc, int ne, int de, int cs);
+    RNN(int, int, int, int, int);
 
     void getEmbeddingsFromIndex(matrix<int>&, matrix<double>&);
 
@@ -43,6 +49,8 @@ public:
     void getWindowMatrix(vector<int>&, matrix<int>&, int = 7);
 
     void minibatch(matrix<int>&, tensor3<int>&, int);
+
+    void recurrence(tensor3<double>&, tensor3<double>&, tensor3<double>&);
 
 };
 
