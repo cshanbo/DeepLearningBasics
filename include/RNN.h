@@ -32,7 +32,9 @@ public:
     int cs;
 
     RNN();
+
     ~RNN();
+
     /*
         nh :: dimension of the hidden layer
         nc :: number of classes
@@ -40,6 +42,7 @@ public:
         de :: dimension of the word embeddings
         cs :: word window context size
     */
+
     RNN(int, int, int, int, int);
 
     void getEmbeddingsFromIndex(matrix<int>&, matrix<double>&);
@@ -51,6 +54,9 @@ public:
     void minibatch(matrix<int>&, tensor3<int>&, int);
 
     void recurrence(tensor3<double>&, tensor3<double>&, tensor3<double>&);
+
+    //s_output, y_given_x_sentence, y_given_x_lastword, y_pred
+    void getSentenceLabels(tensor3<double>&, matrix<double>&, vector<double>&, vector<int>&);
 
 };
 

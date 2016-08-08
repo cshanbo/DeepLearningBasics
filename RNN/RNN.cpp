@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-05 14:54:43
+Last modified: 2016-08-06 09:58:01
 GCC version: 4.9.3
 *****************************************/
 
@@ -183,7 +183,7 @@ void RNN::recurrence(tensor3<double>& x, tensor3<double>& h, tensor3<double>& s)
                     h[i][j][k] = temp1[j][k] + temp2[j][k];
 
             dot(h[i], this->weights, s[i], this->bias);
-            for(auto &v: h[i])
+            for(auto &v: s[i])
                 softmax(v);
         } else {
             //calc h_i from x_i and h_i-1
@@ -198,9 +198,29 @@ void RNN::recurrence(tensor3<double>& x, tensor3<double>& h, tensor3<double>& s)
             //calc s_i
             dot(h[i], this->weights, s[i], this->bias);
 
-            for(auto &v: h[i])
+            for(auto &v: s[i])
                 softmax(v);
         }
+    }
+}
+
+void RNN::getSentenceLabels(tensor3<double>& s, matrix<double>& y_given_x_sentence, vector<double>& y_given_x_lastword, vector<int>& y_pred) {
+    if(s.empty())
+        return;
+    for(auto mt: s)
+        y_given_x_sentence.push_back(mt[0]);
+
+    y_given_x_lastword = s[s.size() - 1][0];
+
+    for(auto vec: y_given_x_sentence) {
+        double max = 0;
+        double idx = 0;
+        for(unsigned int i = 0; i < vec.size(); ++i)
+            if(max < vec[i]) {
+                max = vec[i];
+                idx = i;
+            }
+        y_pred.push_back(idx);
     }
 }
 
@@ -220,8 +240,15 @@ int main() {
         {9, 9, 9, 9, 9, 9, 9, 9, 9}
     };
 
-    RNN rnn(3, 4, 10, 3, 3);
-    //rnn.embeddings = embeddings;
+/*
+    nh :: dimension of the hidden layer
+    nc :: number of classes (output labels)
+    ne :: number of word embeddings in the vocabulary
+    de :: dimension of the word embeddings
+    cs :: word window context size
+*/
+    RNN rnn(5, 4, 10, 9, 3);
+    rnn.embeddings = embeddings;
     rnn.getWindowMatrix(indexes, out);
     
     print(out);
@@ -238,8 +265,11 @@ int main() {
 
     tensor3<double> h, s;
     rnn.recurrence(embs, h, s);
-    for(auto ma: s)
+    int i = 0;
+    for(auto ma: s) {
+        cout << i++ << endl;
         print(ma);
+    }
 
     return 0;
 }
