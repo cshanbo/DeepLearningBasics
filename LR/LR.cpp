@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-08-04 20:27:59
+Last modified: 2016-08-08 16:23:13
 GCC version: 4.9.3
 */
 
@@ -82,7 +82,7 @@ void LogisticRegression::update(double rate, vector<int> y) {
             //dy = y[k] == i? 1 - y_given_x[k][i]: -1 * y_given_x[k][i];
             //while the gradient of negativeloglikelihood is simply y_i - o_i (before softmax)
             //o_i is weight dot input
-            //so the gradient of weight is easy to calc
+            //so the gradient of weight is easy to calculate
             dy = y[k] == i? y_given_x[k][i] - 1: y_given_x[k][i];
             //mini batch, average
             

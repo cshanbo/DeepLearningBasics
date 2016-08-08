@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-06 09:58:01
+Last modified: 2016-08-08 16:38:05
 GCC version: 4.9.3
 *****************************************/
 
@@ -195,6 +195,7 @@ void RNN::recurrence(tensor3<double>& x, tensor3<double>& h, tensor3<double>& s)
             for(unsigned int j = 0; j < temp1.size(); ++j)
                 for(unsigned int k = 0; k < temp1[0].size(); ++k)
                     h[i][j][k] = temp1[j][k] + temp2[j][k];
+            
             //calc s_i
             dot(h[i], this->weights, s[i], this->bias);
 
@@ -222,6 +223,17 @@ void RNN::getSentenceLabels(tensor3<double>& s, matrix<double>& y_given_x_senten
             }
         y_pred.push_back(idx);
     }
+}
+
+double sentenceNLL(matrix<double>& y_given_x_sentence, vector<int>& y) {
+// calculate the negative loglikelihood of a sentence prediction
+    assert(y_given_x_sentence.size() == y.size());
+    if(y_given_x_sentence.empty())
+        return -1;
+    double sum = 0;
+    for(unsigned int i = 0; i < y_given_x_sentence.size(); ++i)
+        sum += log(y_given_x[i][y[i]]);
+    return -1 * sum / y.size();
 }
 
 int main() {
@@ -270,6 +282,19 @@ int main() {
         cout << i++ << endl;
         print(ma);
     }
+    cout << "======================" << endl;
+
+    matrix<double> y_given_x_sentence;
+    vector<double> y_given_x_lastword;
+    vector<int> y_pred;
+    rnn.getSentenceLabels(s, y_given_x_sentence, y_given_x_lastword, y_pred);
+    print(y_given_x_sentence);
+    for(auto d: y_given_x_lastword)
+        cout << d << " ";
+    cout << endl;
+    for(auto i: y_pred)
+        cout << i << " ";
+    cout << endl;
 
     return 0;
 }
