@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-04 20:32:28
+Last modified: 2016-08-09 13:01:22
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -164,7 +164,7 @@ double dotElement(matrix<double>& m1, matrix<double>& m2) {
 
 double dotElement(matrix<double>& m1, matrix<double>& m2, pair<int, int> p1, pair<int, int> p2) {
     //the definition of p1 p2 is exactly same as the dot function
-    assert(!m1.empty() && !m2.empty() && p2.second - p1.second + 1 == m2.size() && p2.first - p2.first + 1 == m2[0].size());
+    assert(!m1.empty() && !m2.empty() && p2.second - p1.second + 1 == (int)m2.size() && p2.first - p2.first + 1 == (int)m2[0].size());
     double ret = 0;
     for(unsigned int i = 0; i < m2.size(); ++i)
         for(unsigned int j = 0; j < m2[0].size(); ++j)

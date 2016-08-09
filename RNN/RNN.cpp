@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-08 16:38:05
+Last modified: 2016-08-09 13:00:36
 GCC version: 4.9.3
 *****************************************/
 
@@ -31,6 +31,8 @@ GCC version: 4.9.3
 
 #include "../include/RNN.h"
 #include "../include/utils.h"
+
+#include <cmath>
 #include <vector>
 #include <cassert>
 #include <iostream>
@@ -48,7 +50,7 @@ RNN::RNN() {}
 
 RNN::~RNN() {}
 
-RNN::RNN(int nh, int nc, int ne, int de, int cs) {
+RNN::RNN(int nh, int nc, int ne, int de, int cs, int bs) {
     //ne is the vocab_size
     //embeddings contains all of the word embedding for vocab
     //
@@ -58,6 +60,7 @@ RNN::RNN(int nh, int nc, int ne, int de, int cs) {
     this->ne = ne;
     this->de = de;
     this->cs = cs;
+    this->back_size = bs;
 
     this->embeddings = matrix<double>(ne + 1, vector<double>(de, 0));
     this->wx = matrix<double>(de * cs, vector<double>(nh, 0));
@@ -84,6 +87,7 @@ RNN::RNN(int nh, int nc, int ne, int de, int cs) {
     for(auto& vec: weights)
         for(auto& d: vec)
             d = randRange(-0.2, 0.2);
+
 }
 
 void RNN::getEmbeddingsFromIndex(matrix<int>& indexes, matrix<double>& embs) {
@@ -125,10 +129,10 @@ void RNN::getEmbeddingsFromIndex(tensor3<int>& indexes, tensor3<double>& embs) {
             int idx = 0;
             for(unsigned int j = 0; j < indexes[k][i].size(); ++j) {
                 if(indexes[k][i][j] < 0)
-                    for(unsigned int m = 0; m < dim_embed; m++)
+                    for(int m = 0; m < dim_embed; m++)
                         idx++;
                 else
-                    for(unsigned int m = 0; m < dim_embed; m++)
+                    for(int m = 0; m < dim_embed; m++)
                         embs[k][i][idx++] = this->embeddings[indexes[k][i][j]][m];
             }
         }
@@ -150,7 +154,7 @@ void RNN::getWindowMatrix(vector<int>& indexes, matrix<int>& out, int w_sz) {
     }
 }
 
-void RNN::minibatch(matrix<int>& window_matrix, tensor3<int>& ret, int back_size) {
+void RNN::minibatch(matrix<int>& window_matrix, tensor3<int>& ret) {
     if(window_matrix.empty())
         return;
     ret = tensor3<int>(window_matrix.size(), matrix<int>());
@@ -205,7 +209,7 @@ void RNN::recurrence(tensor3<double>& x, tensor3<double>& h, tensor3<double>& s)
     }
 }
 
-void RNN::getSentenceLabels(tensor3<double>& s, matrix<double>& y_given_x_sentence, vector<double>& y_given_x_lastword, vector<int>& y_pred) {
+void RNN::getSentenceLabels(tensor3<double>& s) {
     if(s.empty())
         return;
     for(auto mt: s)
@@ -213,39 +217,64 @@ void RNN::getSentenceLabels(tensor3<double>& s, matrix<double>& y_given_x_senten
 
     y_given_x_lastword = s[s.size() - 1][0];
 
-    for(auto vec: y_given_x_sentence) {
-        double max = 0;
-        double idx = 0;
-        for(unsigned int i = 0; i < vec.size(); ++i)
-            if(max < vec[i]) {
-                max = vec[i];
-                idx = i;
-            }
-        y_pred.push_back(idx);
-    }
+    for(auto vec: y_given_x_sentence)
+        y_pred.push_back(maxIndex(vec));
 }
 
-double sentenceNLL(matrix<double>& y_given_x_sentence, vector<int>& y) {
+double RNN::sentenceNLL(matrix<double>& y_given_x_sentence, vector<int>& y) {
 // calculate the negative loglikelihood of a sentence prediction
     assert(y_given_x_sentence.size() == y.size());
     if(y_given_x_sentence.empty())
         return -1;
     double sum = 0;
     for(unsigned int i = 0; i < y_given_x_sentence.size(); ++i)
-        sum += log(y_given_x[i][y[i]]);
+        sum += log(y_given_x_sentence[i][y[i]]);
     return -1 * sum / y.size();
 }
 
+void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<double>& h, double rate) {
+    //mini batch is a sentence, mini batch update
+    if(y_given_x_sentence.empty())
+       return; 
+    //update weights shape (n_hidden, n_output)
+    for(unsigned int k = 0; k < y_given_x_sentence.size(); ++k) {
+        for(unsigned int i = 0; i < weights.size(); ++i) {
+            for(unsigned int j = 0; j < weights[0].size(); ++j) {
+                weights[i][j] += rate * (y[k] == 1? y_given_x_sentence[k][j] - 1: y_given_x_sentence[k][j]) * h[k][0][i] / y_given_x_sentence.size();
+            }
+        }
+    }
+
+    //update wx
+    for(unsigned int k = 0; k < y_given_x_sentence.size(); ++k) {
+        for(unsigned int i = 0; i < wx.size(); ++i) {
+            for(unsigned int j = 0; j < wx[0].size(); ++j) {
+                wx[i][j] += rate * (y[k] == 1? y_given_x_sentence[k][j] - 1: y_given_x_sentence[k][j]) *  input[k][i] / y_given_x_sentence.size();
+            }
+        }
+    }
+    
+    //update wh
+    for(unsigned int k = 0; k < y_given_x_sentence.size(); ++k) {
+        for(unsigned int i = 0; i < wh.size(); ++i) {
+            for(unsigned int j = 0; j < wh[0].size(); ++j) {
+                if(k > 0)
+                    wh[i][j] += rate * (y[k] == 1? y_given_x_sentence[k][j] - 1: y_given_x_sentence[k][j]) * h[k - 1][0][i] / y_given_x_sentence.size();
+            }
+        }
+    }
+}
+
 int main() {
-    vector<int> indexes{4, 1, 8, 3, 5};
+    vector<int> indexes{4, 1, 8, 3, 5, 2, 6};
     matrix<int> out;
     matrix<double> embeddings{
         {0, 0, 0, 0, 0, 0, 0, 0, 0}, 
         {1, 1, 1, 1, 1, 1, 1, 1, 1}, 
         {2, 2, 2, 2, 2, 2, 2, 2, 2}, 
-        {3, 3, 3, 3, 3, 3, 3, 3, 3}, 
-        {4, 4, 4, 4, 4, 4, 4, 4, 4}, 
-        {5, 5, 5, 5, 5, 5, 5, 5, 5}, 
+        {3, 3.1, 3, 3, 3, 3, 3, 3, 3}, 
+        {4, 4, 4.2, 4, 4, 4, 4, 4, 4}, 
+        {5, 5, 5.1, 5, 5, 5, 5, 5, 5}, 
         {6, 6, 6, 6, 6, 6, 6, 6, 6}, 
         {7, 7, 7, 7, 7, 7, 7, 7, 7},
         {8, 8, 8, 8, 8, 8, 8, 8, 8}, 
@@ -258,43 +287,47 @@ int main() {
     ne :: number of word embeddings in the vocabulary
     de :: dimension of the word embeddings
     cs :: word window context size
+    bs :: bptt size
 */
-    RNN rnn(5, 4, 10, 9, 3);
-    rnn.embeddings = embeddings;
+    RNN rnn(3, 4, 10, 9, 3, 4);
+
+    //rnn.embeddings = embeddings;
     rnn.getWindowMatrix(indexes, out);
     
-    print(out);
     tensor3<int> ret;
     //get mini batch for bptt
-    rnn.minibatch(out, ret, 4);
+    rnn.minibatch(out, ret);
+
     tensor3<double> embs;
 
     rnn.getEmbeddingsFromIndex(ret, embs);
 
-    for(auto m: embs)
-        print(m);
-    cout << "---------------" << endl;
+    rnn.input.clear();
+    for(auto matrix: embs)
+        rnn.input.push_back(matrix[matrix.size() - 1]);
+    print(rnn.input);
+
+    //for(auto m: embs)
+    //    print(m);
 
     tensor3<double> h, s;
     rnn.recurrence(embs, h, s);
+
     int i = 0;
-    for(auto ma: s) {
+    for(auto ma: h) {
         cout << i++ << endl;
         print(ma);
     }
     cout << "======================" << endl;
 
-    matrix<double> y_given_x_sentence;
-    vector<double> y_given_x_lastword;
-    vector<int> y_pred;
-    rnn.getSentenceLabels(s, y_given_x_sentence, y_given_x_lastword, y_pred);
-    print(y_given_x_sentence);
-    for(auto d: y_given_x_lastword)
-        cout << d << " ";
-    cout << endl;
-    for(auto i: y_pred)
-        cout << i << " ";
-    cout << endl;
+    rnn.getSentenceLabels(s);
+    //print(rnn.y_given_x_sentence);
+    //for(auto d: rnn.y_given_x_lastword)
+    //    cout << d << " ";
+    //cout << endl;
+    //for(auto i: rnn.y_pred)
+    //    cout << i << " ";
+    //cout << endl;
 
     return 0;
 }

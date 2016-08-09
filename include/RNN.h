@@ -21,15 +21,26 @@ public:
     matrix<double> wh;
     matrix<double> weights;
 
+    //one mini batch
+    matrix<double> input;
+
     vector<double> hbias;
     vector<double> bias;
     vector<double> h0;
+
+    //y_given_x_sentence (a mini batch)
+    matrix<double> y_given_x_sentence;
+    //the last output 
+    vector<double> y_given_x_lastword;
+    //the prediction of a mini batch
+    vector<int> y_pred;
 
     int nh;
     int nc;
     int ne;
     int de;
     int cs;
+    int back_size;
 
     RNN();
 
@@ -41,9 +52,10 @@ public:
         ne :: number of word embeddings in the vocabulary
         de :: dimension of the word embeddings
         cs :: word window context size
+        bs :: bptt size
     */
 
-    RNN(int, int, int, int, int);
+    RNN(int, int, int, int, int, int);
 
     void getEmbeddingsFromIndex(matrix<int>&, matrix<double>&);
 
@@ -51,12 +63,16 @@ public:
 
     void getWindowMatrix(vector<int>&, matrix<int>&, int = 7);
 
-    void minibatch(matrix<int>&, tensor3<int>&, int);
+    void minibatch(matrix<int>&, tensor3<int>&);
 
     void recurrence(tensor3<double>&, tensor3<double>&, tensor3<double>&);
 
     //s_output, y_given_x_sentence, y_given_x_lastword, y_pred
-    void getSentenceLabels(tensor3<double>&, matrix<double>&, vector<double>&, vector<int>&);
+    void getSentenceLabels(tensor3<double>&);
+    // y_given_x_sentence,  y
+    double sentenceNLL(matrix<double>&, vector<int>&);
+
+    void update(matrix<double>&, vector<int>&, tensor3<double>&, double);
 
 };
 
