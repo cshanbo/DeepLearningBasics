@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-09 13:00:36
+Last modified: 2016-08-09 13:55:28
 GCC version: 4.9.3
 *****************************************/
 
@@ -233,6 +233,10 @@ double RNN::sentenceNLL(matrix<double>& y_given_x_sentence, vector<int>& y) {
 }
 
 void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<double>& h, double rate) {
+
+}
+
+void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<double>& embs, tensor3<double>& s, tensor3<double>& h, double rate) {
     //mini batch is a sentence, mini batch update
     if(y_given_x_sentence.empty())
        return; 
@@ -263,6 +267,14 @@ void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<dou
             }
         }
     }
+
+    //update word embedding
+    for(unsigned int i = 0; i < input.size(); ++i) {
+        for(unsigned int j = 0; j < input[0].size(); ++j) {
+            //input[i][j] += rate * (y[k] == 1? y_given_x_sentence[k][j] - 1: y_given_x_sentence[k][j]) * wx[j][] / y_given_x_sentence.size();
+        }
+    }
+    //recurrence(embs, h, s);
 }
 
 int main() {
