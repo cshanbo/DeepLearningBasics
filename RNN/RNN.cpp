@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-09 13:55:28
+Last modified: 2016-08-10 09:29:47
 GCC version: 4.9.3
 *****************************************/
 
@@ -236,7 +236,8 @@ void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<dou
 
 }
 
-void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<double>& embs, tensor3<double>& s, tensor3<double>& h, double rate) {
+//this embs is the embeddings of whole vocab, not just minibatch
+void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, matrix<double>& embs, tensor3<double>& s, tensor3<double>& h, double rate) {
     //mini batch is a sentence, mini batch update
     if(y_given_x_sentence.empty())
        return; 
@@ -275,6 +276,20 @@ void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<dou
         }
     }
     //recurrence(embs, h, s);
+    normalizeEmbedding(embs);
+}
+
+void RNN::normalizeEmbedding(matrix<double>& embs) {
+    if(embs.empty())
+        return;
+    for(auto& vec: embs) {
+        double sum;
+        for(auto d: vec)
+            sum += d * d;
+        sum = sqrt(sum);
+        for(auto& d: vec)
+            d /= sum;
+    }
 }
 
 int main() {
