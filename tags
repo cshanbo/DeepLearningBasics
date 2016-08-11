@@ -1,0 +1,201 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Autoencoder	AutoEncoder/autoencoder.cpp	/^Autoencoder::Autoencoder() {}$/;"	f	class:Autoencoder
+Autoencoder	AutoEncoder/autoencoder.cpp	/^Autoencoder::Autoencoder(vector<vector<double>> input, int n_visible, int n_hidden) {$/;"	f	class:Autoencoder
+Autoencoder	include/autoencoder.h	/^class Autoencoder {$/;"	c
+BIN_DIR	AutoEncoder/Makefile	/^BIN_DIR = bin$/;"	m
+BIN_DIR	CNN/Makefile	/^BIN_DIR = bin$/;"	m
+BIN_DIR	LR/Makefile	/^BIN_DIR = bin$/;"	m
+BIN_DIR	MLP/Makefile	/^BIN_DIR = bin$/;"	m
+BIN_DIR	Makefile	/^BIN_DIR = bin$/;"	m
+CNN	CNN/CNN.cpp	/^CNN::CNN() {}$/;"	f	class:CNN
+CNN	CNN/CNN.cpp	/^CNN::CNN(tensor4<double>& inp, tuple<int, int, int, int> inshape, tuple<int, int, int, int> outshape, tuple<int, int> poolingShapes, int n_in, int n_h_out, int n_out) {$/;"	f	class:CNN
+CNN	include/CNN.h	/^class CNN {$/;"	c
+CXX	AutoEncoder/Makefile	/^CXX=g++$/;"	m
+CXX	CNN/Makefile	/^CXX=g++$/;"	m
+CXX	LR/Makefile	/^CXX=g++$/;"	m
+CXX	MLP/Makefile	/^CXX=g++$/;"	m
+CXX	Makefile	/^CXX=g++$/;"	m
+CXXFLAGS	AutoEncoder/Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+CXXFLAGS	CNN/Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+CXXFLAGS	LR/Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+CXXFLAGS	MLP/Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+CXXFLAGS	Makefile	/^CXXFLAGS = -g -std=c++11 -Wall -pedantic -I.$/;"	m
+ConvolutionLayer	CNN/convolutionLayer.cpp	/^ConvolutionLayer::ConvolutionLayer() {}$/;"	f	class:ConvolutionLayer
+ConvolutionLayer	CNN/convolutionLayer.cpp	/^ConvolutionLayer::ConvolutionLayer(tensor4<double> input, tuple<int, int, int, int> inshape, tuple<int, int, int, int> fshape, tuple<int, int> pshape) {$/;"	f	class:ConvolutionLayer
+ConvolutionLayer	include/convolutionLayer.h	/^class ConvolutionLayer {$/;"	c
+HiddenLayer	HiddenLayer/HiddenLayer.cpp	/^HiddenLayer::HiddenLayer() {}$/;"	f	class:HiddenLayer
+HiddenLayer	HiddenLayer/HiddenLayer.cpp	/^HiddenLayer::HiddenLayer(int n_in, int n_out, vector<vector<double>> input, int activationType) {$/;"	f	class:HiddenLayer
+HiddenLayer	include/HiddenLayer.h	/^class HiddenLayer {$/;"	c
+INC_DIR	AutoEncoder/Makefile	/^INC_DIR = include$/;"	m
+INC_DIR	CNN/Makefile	/^INC_DIR = include$/;"	m
+INC_DIR	LR/Makefile	/^INC_DIR = include$/;"	m
+INC_DIR	MLP/Makefile	/^INC_DIR = include$/;"	m
+INC_DIR	Makefile	/^INC_DIR = include$/;"	m
+L1	utils/utils.cpp	/^double L1(vector<vector<double>>& w1) {$/;"	f
+L2	utils/utils.cpp	/^double L2(vector<vector<double>>& w1) {$/;"	f
+LogisticRegression	LR/LR.cpp	/^LogisticRegression::LogisticRegression() {}$/;"	f	class:LogisticRegression
+LogisticRegression	LR/LR.cpp	/^LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, int out_d) {$/;"	f	class:LogisticRegression
+LogisticRegression	include/LR.h	/^class LogisticRegression {$/;"	c
+MLP	MLP/MLP.cpp	/^MLP::MLP() {}$/;"	f	class:MLP
+MLP	MLP/MLP.cpp	/^MLP::MLP(int n_in, int n_out, int n_hidden, vector<vector<double>> input) {$/;"	f	class:MLP
+MLP	include/MLP.h	/^class MLP {$/;"	c
+OBJ_DIR	AutoEncoder/Makefile	/^OBJ_DIR = obj$/;"	m
+OBJ_DIR	CNN/Makefile	/^OBJ_DIR = obj$/;"	m
+OBJ_DIR	LR/Makefile	/^OBJ_DIR = obj$/;"	m
+OBJ_DIR	MLP/Makefile	/^OBJ_DIR = obj$/;"	m
+OBJ_DIR	Makefile	/^OBJ_DIR = obj$/;"	m
+RBM	RBM/RBM.cpp	/^RBM::RBM(int n_visible, int n_hidden, vector<vector<double>> input, vector<double> vbias, vector<double> hbias) {$/;"	f	class:RBM
+RBM	include/RBM.h	/^class RBM {$/;"	c
+RNN	RNN/RNN.cpp	/^RNN::RNN() {}$/;"	f	class:RNN
+RNN	RNN/RNN.cpp	/^RNN::RNN(int nh, int nc, int ne, int de, int cs, int bs) {$/;"	f	class:RNN
+RNN	include/RNN.h	/^class RNN {$/;"	c
+SRC_DIR	AutoEncoder/Makefile	/^SRC_DIR = AutoEncoder$/;"	m
+SRC_DIR	CNN/Makefile	/^SRC_DIR = CNN$/;"	m
+SRC_DIR	LR/Makefile	/^SRC_DIR = LR $/;"	m
+SRC_DIR	MLP/Makefile	/^SRC_DIR = MLP$/;"	m
+SRC_DIR	Makefile	/^SRC_DIR = RNN$/;"	m
+UTIL_DIR	AutoEncoder/Makefile	/^UTIL_DIR = utils$/;"	m
+UTIL_DIR	CNN/Makefile	/^UTIL_DIR = utils$/;"	m
+UTIL_DIR	LR/Makefile	/^UTIL_DIR = utils$/;"	m
+UTIL_DIR	MLP/Makefile	/^UTIL_DIR = utils$/;"	m
+UTIL_DIR	Makefile	/^UTIL_DIR = utils$/;"	m
+_AUTO_ENCODER_H_	include/autoencoder.h	12;"	d
+_CNN_H_	include/CNN.h	12;"	d
+_CONVOLUTION_LAYER_H_	include/convolutionLayer.h	12;"	d
+_HIDDEN_LAYER_H_	include/HiddenLayer.h	12;"	d
+_LOGISTIC_REGRESSION_H_	include/LR.h	12;"	d
+_MLP_H_	include/MLP.h	13;"	d
+_RBM_H_	include/RBM.h	12;"	d
+_RNN_H_	include/RNN.h	12;"	d
+_UTILS_H_	include/utils.h	11;"	d
+activation	HiddenLayer/HiddenLayer.cpp	/^void HiddenLayer::activation(vector<double>& vec, int s) {$/;"	f	class:HiddenLayer
+activation	HiddenLayer/HiddenLayer.cpp	/^void HiddenLayer::activation(vector<vector<double>>& vec, int s) {$/;"	f	class:HiddenLayer
+back_size	include/RNN.h	/^    int back_size;$/;"	m	class:RNN
+bias	include/HiddenLayer.h	/^    vector<double> bias;                \/\/a double vector$/;"	m	class:HiddenLayer
+bias	include/LR.h	/^    vector<double> bias;$/;"	m	class:LogisticRegression
+bias	include/RNN.h	/^    vector<double> bias;$/;"	m	class:RNN
+bias	include/convolutionLayer.h	/^    vector<double> bias;$/;"	m	class:ConvolutionLayer
+calcError	LR/LR.cpp	/^double LogisticRegression::calcError(vector<int> y) {$/;"	f	class:LogisticRegression
+conv2d	CNN/convolutionLayer.cpp	/^void ConvolutionLayer::conv2d(tensor4<double>& input, tensor4<double>& weights, tuple<int, int, int, int>& filter_shape, tuple<int, int, int, int>& input_shape, tensor4<double>& output, bool full_conv) {$/;"	f	class:ConvolutionLayer
+convLayer	include/CNN.h	/^    ConvolutionLayer convLayer;$/;"	m	class:CNN
+cosine	utils/utils.cpp	/^double cosine(vector<double>& v1, vector<double>& v2) {$/;"	f
+cost	MLP/MLP.cpp	/^double MLP::cost(vector<int> y, double l1_rate, double l2_rate) {$/;"	f	class:MLP
+cs	include/RNN.h	/^    int cs;$/;"	m	class:RNN
+de	include/RNN.h	/^    int de;$/;"	m	class:RNN
+dot	utils/utils.cpp	/^void dot(vector<vector<double>>& input, vector<vector<double>>& matrix, vector<vector<double>>& ret, pair<int, int> p1, pair<int, int> p2, vector<double> bias) {$/;"	f
+dot	utils/utils.cpp	/^void dot(vector<vector<double>>& input, vector<vector<double>>& matrix, vector<vector<double>>& ret, vector<double> bias) {$/;"	f
+dotElement	utils/utils.cpp	/^double dotElement(matrix<double>& m1, matrix<double>& m2) {$/;"	f
+dotElement	utils/utils.cpp	/^double dotElement(matrix<double>& m1, matrix<double>& m2, pair<int, int> p1, pair<int, int> p2) {$/;"	f
+embeddings	include/RNN.h	/^    matrix<double> embeddings;  \/\/the collection of all word embeddings, shape is the vocab_size + 1 * embedding_dim$/;"	m	class:RNN
+errors	include/MLP.h	/^    double errors;$/;"	m	class:MLP
+fan_in	include/convolutionLayer.h	/^    int fan_in;$/;"	m	class:ConvolutionLayer
+fan_out	include/convolutionLayer.h	/^    int fan_out;$/;"	m	class:ConvolutionLayer
+filter_shape	include/convolutionLayer.h	/^    tuple<int, int, int, int> filter_shape;$/;"	m	class:ConvolutionLayer
+flatten2	utils/utils.cpp	/^void flatten2(tensor4<double>& t, matrix<double>& r) {$/;"	f
+freeEnergy	RBM/RBM.cpp	/^vector<double> RBM::freeEnergy(vector<vector<double>> v_sample) {$/;"	f	class:RBM
+getCorruptedInput	AutoEncoder/autoencoder.cpp	/^void Autoencoder::getCorruptedInput(vector<vector<double>> input, vector<vector<double>>& cVec, double corrupt) {$/;"	f	class:Autoencoder
+getEmbeddingsFromIndex	RNN/RNN.cpp	/^void RNN::getEmbeddingsFromIndex(matrix<int>& indexes, matrix<double>& embs) {$/;"	f	class:RNN
+getEmbeddingsFromIndex	RNN/RNN.cpp	/^void RNN::getEmbeddingsFromIndex(tensor3<int>& indexes, tensor3<double>& embs) {$/;"	f	class:RNN
+getHiddenValues	AutoEncoder/autoencoder.cpp	/^void Autoencoder::getHiddenValues(vector<vector<double>>& input, vector<vector<double>>& hiddenVals) {$/;"	f	class:Autoencoder
+getReconstructedInput	AutoEncoder/autoencoder.cpp	/^void Autoencoder::getReconstructedInput(vector<vector<double>>& hidden, vector<vector<double>>& rec) {$/;"	f	class:Autoencoder
+getSentenceLabels	RNN/RNN.cpp	/^void RNN::getSentenceLabels(tensor3<double>& s) {$/;"	f	class:RNN
+getWindowMatrix	RNN/RNN.cpp	/^void RNN::getWindowMatrix(vector<int>& indexes, matrix<int>& out, int w_sz) {$/;"	f	class:RNN
+h0	include/RNN.h	/^    vector<double> h0;$/;"	m	class:RNN
+hbias	include/RBM.h	/^    vector<double> hbias;$/;"	m	class:RBM
+hbias	include/RNN.h	/^    vector<double> hbias;$/;"	m	class:RNN
+hbias	include/autoencoder.h	/^    vector<double> hbias;$/;"	m	class:Autoencoder
+hiddenLayer	include/CNN.h	/^    HiddenLayer hiddenLayer;$/;"	m	class:CNN
+hiddenLayer	include/MLP.h	/^    HiddenLayer hiddenLayer;$/;"	m	class:MLP
+input	include/CNN.h	/^    tensor4<double> input;$/;"	m	class:CNN
+input	include/HiddenLayer.h	/^    matrix<double> input;       \/\/a double matrix$/;"	m	class:HiddenLayer
+input	include/LR.h	/^    vector<vector<double>> input;$/;"	m	class:LogisticRegression
+input	include/MLP.h	/^    vector<vector<double>> input;$/;"	m	class:MLP
+input	include/RBM.h	/^    vector<vector<double>> input;$/;"	m	class:RBM
+input	include/RNN.h	/^    matrix<double> input;$/;"	m	class:RNN
+input	include/autoencoder.h	/^    vector<vector<double>> input;$/;"	m	class:Autoencoder
+input	include/convolutionLayer.h	/^    tensor4<double> input;$/;"	m	class:ConvolutionLayer
+input_shape	include/convolutionLayer.h	/^    tuple<int, int, int, int> input_shape;$/;"	m	class:ConvolutionLayer
+l1_norm	MLP/MLP.cpp	/^double MLP::l1_norm(vector<vector<double>>& w1, vector<vector<double>>& w2) {$/;"	f	class:MLP
+l2_norm	MLP/MLP.cpp	/^double MLP::l2_norm(vector<vector<double>>& w1, vector<vector<double>>& w2) {$/;"	f	class:MLP
+logisticLayer	include/CNN.h	/^    LogisticRegression logisticLayer;$/;"	m	class:CNN
+logisticLayer	include/MLP.h	/^    LogisticRegression logisticLayer;    $/;"	m	class:MLP
+main	CNN/CNN.cpp	/^int main() {$/;"	f
+main	RNN/RNN.cpp	/^int main() {$/;"	f
+maxIndex	utils/utils.cpp	/^int maxIndex(vector<double>& vec) {$/;"	f
+maxPooling	utils/utils.cpp	/^double maxPooling(matrix<double>& m, pair<int, int> p1, pair<int, int> p2) {$/;"	f
+minibatch	RNN/RNN.cpp	/^void RNN::minibatch(matrix<int>& window_matrix, tensor3<int>& ret) {$/;"	f	class:RNN
+n_hidden	include/MLP.h	/^    int n_hidden;	\/\/hidden layer input dimension$/;"	m	class:MLP
+n_hidden	include/RBM.h	/^    int n_hidden;$/;"	m	class:RBM
+n_hidden	include/autoencoder.h	/^    int n_hidden;$/;"	m	class:Autoencoder
+n_in	include/HiddenLayer.h	/^    int n_in;       \/\/dimension of input$/;"	m	class:HiddenLayer
+n_in	include/LR.h	/^    int n_in;$/;"	m	class:LogisticRegression
+n_in	include/MLP.h	/^    int n_in;$/;"	m	class:MLP
+n_out	include/HiddenLayer.h	/^    int n_out;	    \/\/dimension of output$/;"	m	class:HiddenLayer
+n_out	include/LR.h	/^    int n_out;$/;"	m	class:LogisticRegression
+n_out	include/MLP.h	/^    int n_out;$/;"	m	class:MLP
+n_visible	include/RBM.h	/^    int n_visible;$/;"	m	class:RBM
+n_visible	include/autoencoder.h	/^    int n_visible;$/;"	m	class:Autoencoder
+nc	include/RNN.h	/^    int nc;$/;"	m	class:RNN
+ne	include/RNN.h	/^    int ne;$/;"	m	class:RNN
+negativeLogLikelihood	LR/LR.cpp	/^double LogisticRegression::negativeLogLikelihood(vector<int> y) {$/;"	f	class:LogisticRegression
+negativeLogLikelihood	include/MLP.h	/^    double negativeLogLikelihood;$/;"	m	class:MLP
+nh	include/RNN.h	/^    int nh;$/;"	m	class:RNN
+normalizeEmbedding	RNN/RNN.cpp	/^void RNN::normalizeEmbedding(matrix<double>& embs) {$/;"	f	class:RNN
+output	include/HiddenLayer.h	/^    matrix<double> output;     \/\/a double matrix$/;"	m	class:HiddenLayer
+output	include/convolutionLayer.h	/^    tensor4<double> output;$/;"	m	class:ConvolutionLayer
+poolOut	CNN/convolutionLayer.cpp	/^void ConvolutionLayer::poolOut(tensor4<double>& conv_out, tensor4<double>& output, pair<int, int> pool_size, bool ignore_border) {$/;"	f	class:ConvolutionLayer
+pool_size	include/convolutionLayer.h	/^    tuple<int, int> pool_size;$/;"	m	class:ConvolutionLayer
+print	include/utils.h	/^void print(matrix<T> vec) {$/;"	f
+randRange	utils/utils.cpp	/^double randRange(double fMin,  double fMax) {$/;"	f
+reconstruct	AutoEncoder/autoencoder.cpp	/^void Autoencoder::reconstruct(vector<vector<double>> &x, vector<vector<double>>& rec) {$/;"	f	class:Autoencoder
+reconstruct	RBM/RBM.cpp	/^void RBM::reconstruct(vector<vector<double>>& v, vector<vector<double>>& reconstructed_v) {$/;"	f	class:RBM
+recurrence	RNN/RNN.cpp	/^void RNN::recurrence(tensor3<double>& x, tensor3<double>& h, tensor3<double>& s) {$/;"	f	class:RNN
+sampleHGivenV	RBM/RBM.cpp	/^void RBM::sampleHGivenV(vector<vector<double>>& h1_sample, vector<vector<double>>& pre_sigmoid_h1, vector<vector<double>>& h1_mean, vector<vector<double>>& v0_sample) {$/;"	f	class:RBM
+sampleVGivenH	RBM/RBM.cpp	/^void RBM::sampleVGivenH(vector<vector<double>>& v1_sample, vector<vector<double>>& pre_sigmoid_v1, vector<vector<double>>& v1_mean, vector<vector<double>>& h0_sample) {$/;"	f	class:RBM
+sentenceNLL	RNN/RNN.cpp	/^double RNN::sentenceNLL(matrix<double>& y_given_x_sentence, vector<int>& y) {$/;"	f	class:RNN
+sigmoid	LR/LR.cpp	/^void LogisticRegression::sigmoid(vector<vector<double>>& vec) {$/;"	f	class:LogisticRegression
+sigmoid	utils/utils.cpp	/^double sigmoid(double x) {$/;"	f
+softmax	LR/LR.cpp	/^void LogisticRegression::softmax(vector<vector<double>>& vec) {$/;"	f	class:LogisticRegression
+softmax	utils/utils.cpp	/^void softmax(vector<double>& vec) {$/;"	f
+split	utils/utils.cpp	/^void split(const string &src, const string &separator, vector<string>& dest_list) {$/;"	f
+string_replace	utils/utils.cpp	/^void string_replace(string &origin, const string &src, const string &tgt) {$/;"	f
+test	LR/LR.cpp	/^vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int> y) {$/;"	f	class:LogisticRegression
+test_rbm	RBM/RBM.cpp	/^void test_rbm() {$/;"	f
+train	LR/LR.cpp	/^void LogisticRegression::train(vector<vector<double>> miniBatch, vector<int> y, int epoch, double rate) {$/;"	f	class:LogisticRegression
+transpose	utils/utils.cpp	/^void transpose(vector<vector<double>> src, vector<vector<double>> &tgt) {$/;"	f
+trim	utils/utils.cpp	/^string &trim(string &line) {$/;"	f
+update	AutoEncoder/autoencoder.cpp	/^void Autoencoder::update(double corrupt, double rate) {$/;"	f	class:Autoencoder
+update	HiddenLayer/HiddenLayer.cpp	/^void HiddenLayer::update(double rate, vector<int> y) {$/;"	f	class:HiddenLayer
+update	LR/LR.cpp	/^void LogisticRegression::update(double rate, vector<int> y) {$/;"	f	class:LogisticRegression
+update	MLP/MLP.cpp	/^void MLP::update(double rate, double l1_rate, double l2_rate, vector<int> y) {$/;"	f	class:MLP
+update	RBM/RBM.cpp	/^void RBM::update(double rate, vector<vector<double>> persistence = vector<vector<double>>{}, int k = 1) {$/;"	f	class:RBM
+update	RNN/RNN.cpp	/^void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, matrix<double>& embs, tensor3<double>& s, tensor3<double>& h, double rate) {$/;"	f	class:RNN
+update	RNN/RNN.cpp	/^void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<double>& h, double rate) {$/;"	f	class:RNN
+vbias	include/RBM.h	/^    vector<double> vbias;$/;"	m	class:RBM
+vbias	include/autoencoder.h	/^    vector<double> vbias;$/;"	m	class:Autoencoder
+weights	include/HiddenLayer.h	/^    matrix<double> weights;     \/\/a double matrix$/;"	m	class:HiddenLayer
+weights	include/LR.h	/^    vector<vector<double>> weights;$/;"	m	class:LogisticRegression
+weights	include/RBM.h	/^    vector<vector<double>> weights;$/;"	m	class:RBM
+weights	include/RNN.h	/^    matrix<double> weights;$/;"	m	class:RNN
+weights	include/autoencoder.h	/^    vector<vector<double>> weights;$/;"	m	class:Autoencoder
+weights	include/convolutionLayer.h	/^    tensor4<double> weights;$/;"	m	class:ConvolutionLayer
+wh	include/RNN.h	/^    matrix<double> wh;$/;"	m	class:RNN
+wx	include/RNN.h	/^    matrix<double> wx;  \/\/shape is embedding_dim * window_sz $/;"	m	class:RNN
+y_given_x	include/LR.h	/^    vector<vector<double>> y_given_x;$/;"	m	class:LogisticRegression
+y_given_x_lastword	include/RNN.h	/^    vector<double> y_given_x_lastword;$/;"	m	class:RNN
+y_given_x_sentence	include/RNN.h	/^    matrix<double> y_given_x_sentence;$/;"	m	class:RNN
+y_pred	include/LR.h	/^    vector<int> y_pred;$/;"	m	class:LogisticRegression
+y_pred	include/RNN.h	/^    vector<int> y_pred;$/;"	m	class:RNN
+~Autoencoder	AutoEncoder/autoencoder.cpp	/^Autoencoder::~Autoencoder() {}$/;"	f	class:Autoencoder
+~CNN	CNN/CNN.cpp	/^CNN::~CNN() {}$/;"	f	class:CNN
+~ConvolutionLayer	CNN/convolutionLayer.cpp	/^ConvolutionLayer::~ConvolutionLayer() {}$/;"	f	class:ConvolutionLayer
+~HiddenLayer	HiddenLayer/HiddenLayer.cpp	/^HiddenLayer::~HiddenLayer() {}$/;"	f	class:HiddenLayer
+~LogisticRegression	LR/LR.cpp	/^LogisticRegression::~LogisticRegression() {}$/;"	f	class:LogisticRegression
+~MLP	MLP/MLP.cpp	/^MLP::~MLP() {}$/;"	f	class:MLP
+~RBM	RBM/RBM.cpp	/^RBM::~RBM() {}$/;"	f	class:RBM
+~RNN	RNN/RNN.cpp	/^RNN::~RNN() {}$/;"	f	class:RNN

@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-10 09:29:47
+Last modified: 2016-08-11 11:06:23
 GCC version: 4.9.3
 *****************************************/
 
@@ -237,7 +237,8 @@ void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, tensor3<dou
 }
 
 //this embs is the embeddings of whole vocab, not just minibatch
-void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, matrix<double>& embs, tensor3<double>& s, tensor3<double>& h, double rate) {
+//index is the mini-batch index
+void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, matrix<double>& embs, vector<int>& index, tensor3<double>& s, tensor3<double>& h, double rate) {
     //mini batch is a sentence, mini batch update
     if(y_given_x_sentence.empty())
        return; 
@@ -270,10 +271,17 @@ void RNN::update(matrix<double>& y_given_x_sentence, vector<int>& y, matrix<doub
     }
 
     //update word embedding
-    for(unsigned int i = 0; i < input.size(); ++i) {
-        for(unsigned int j = 0; j < input[0].size(); ++j) {
-            //input[i][j] += rate * (y[k] == 1? y_given_x_sentence[k][j] - 1: y_given_x_sentence[k][j]) * wx[j][] / y_given_x_sentence.size();
-        }
+    for(unsigned int k = 0; k < index.size(); ++k) {
+        //input is the expanded vector
+        for(unsigned int i = 0; i < this->wh.size(); ++i)
+            for(unsigned int j = 0; j < input[0].size(); ++j) {
+                int idx = j / this->cs; //the idx-th word in a window size
+                int idx1 = j % this->cs;
+                //the idx-th word's idx1-th element
+                int real_idx = k - this->cs / 2 + idx; 
+                if(real_idx >= 0 && real_idx < (int)index.size())
+                    embs[index[real_idx]][idx1] += rate * (y[k] == 1? y_given_x_sentence[k][j] - 1: y_given_x_sentence[k][j]) * wx[j][i] / index.size();
+            }
     }
     //recurrence(embs, h, s);
     normalizeEmbedding(embs);
@@ -345,7 +353,6 @@ int main() {
         cout << i++ << endl;
         print(ma);
     }
-    cout << "======================" << endl;
 
     rnn.getSentenceLabels(s);
     //print(rnn.y_given_x_sentence);

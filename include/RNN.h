@@ -74,7 +74,8 @@ public:
 
     void update(matrix<double>&, vector<int>&, tensor3<double>&, double);
 
-    void update(matrix<double>&, vector<int>&, matrix<double>&, tensor3<double>&, tensor3<double>&, double);
+    void update(matrix<double>&, vector<int>&, matrix<double>&, vector<int>&, tensor3<double>&, tensor3<double>&, double);
+    //
 
     void normalizeEmbedding(matrix<double>&);
 
