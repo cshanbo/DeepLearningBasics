@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-08-08 16:23:13
+Last modified: 2016-08-19 15:35:21
 GCC version: 4.9.3
 */
 
@@ -19,7 +19,7 @@ using namespace std;
 
 LogisticRegression::LogisticRegression() {}
 
-LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, int out_d) {
+LogisticRegression::LogisticRegression(matrix<double> input, int in_d, int out_d) {
     //init weights as all 0
 
     n_in = in_d;
@@ -36,23 +36,24 @@ LogisticRegression::LogisticRegression(vector<vector<double>> input, int in_d, i
 
 LogisticRegression::~LogisticRegression() {}
 
-void LogisticRegression::sigmoid(vector<vector<double>>& vec) {
-    if(vec.empty())
+void LogisticRegression::sigmoid(matrix<double>& mat) {
+    if(mat.empty())
         return;
-    for(unsigned int i = 0; i < vec.size(); ++i)
-        for (unsigned int j = 0; j < vec[0].size(); ++j)
-            vec[i][j] = 1.0 / (1 + exp(-1 * vec[i][j]));
+    for(auto& vec: mat)
+        for(auto& d: vec)
+            d = 1.0 / (1 + exp(-1 * d));
 }
 
-void LogisticRegression::softmax(vector<vector<double>>& vec) {
-    if(vec.empty())
+void LogisticRegression::softmax(matrix<double>& mat) {
+    if(mat.empty())
         return;
-    for(unsigned int i = 0; i < vec.size(); ++i) {
+
+    for(auto& vec: mat) {
         double sum = 0;
-        for(unsigned int j = 0; j < vec[0].size(); ++j)
-            sum += exp(vec[i][j]);
-        for(unsigned int j = 0; j < vec[0].size(); ++j)
-            vec[i][j] = exp(vec[i][j]) / sum;
+        for(auto& d: vec)
+            sum += exp(d);
+        for(auto& d: vec)
+            d = exp(d) / sum;
     }
 }
 
@@ -100,7 +101,7 @@ void LogisticRegression::update(double rate, vector<int> y) {
         y_pred[i] = maxIndex(y_given_x[i]);
 }
 
-void LogisticRegression::train(vector<vector<double>> miniBatch, vector<int> y, int epoch, double rate) {
+void LogisticRegression::train(matrix<double> miniBatch, vector<int> y, int epoch, double rate) {
     if(miniBatch.empty())
         return;
     for(int i = 0; i < epoch; ++i) {
@@ -110,7 +111,7 @@ void LogisticRegression::train(vector<vector<double>> miniBatch, vector<int> y, 
     }
 }
 
-vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int> y) {
+vector<int> LogisticRegression::test(matrix<double> testSet, vector<int> y) {
     vector<int> label;
     vector<vector<double>> ygx;
     dot(testSet, weights, ygx, bias);
@@ -155,6 +156,9 @@ vector<int> LogisticRegression::test(vector<vector<double>> testSet, vector<int>
 }*/
 
 
+int main() {
+
+}
 
 
 

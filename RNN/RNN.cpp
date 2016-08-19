@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-11 11:06:23
+Last modified: 2016-08-17 15:43:48
 GCC version: 4.9.3
 *****************************************/
 
