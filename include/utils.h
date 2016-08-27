@@ -15,6 +15,8 @@ GCC version: 4.7.3
 #include <utility>
 #include <iostream>
 
+typedef double (*pf)(double);
+
 using namespace std;
 
 template<typename T>
@@ -71,5 +73,7 @@ double maxPooling(matrix<double>&, pair<int, int>, pair<int, int>);
 void flatten2(tensor4<double>&, matrix<double>&);
 
 void softmax(vector<double>&);
+
+double gradientCheck(pf, double, double);
 
 #endif

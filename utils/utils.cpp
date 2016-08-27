@@ -4,7 +4,7 @@ Program: utils cpp
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-20 13:13:40
-Last modified: 2016-08-09 13:01:22
+Last modified: 2016-08-27 23:06:31
 GCC version: 4.7.3
 std = C++ 11
 ******************************************/
@@ -193,4 +193,8 @@ void softmax(vector<double>& vec) {
         sum += exp(d);
     for(auto &d: vec)
         d = exp(d) / sum;
+}
+
+double gradientCheck(pf p, double x, double calc_grad) {
+    return (p(x + 0.000001) - p(x)) / 0.000001 - calc_grad;
 }
