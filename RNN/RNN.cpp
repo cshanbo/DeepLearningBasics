@@ -4,7 +4,7 @@ Program: Recurrent NN
 Description: 
 Author: cshanbo@gmail.com
 Date: 2016-08-04 10:53:00
-Last modified: 2016-08-17 15:43:48
+Last modified: 2016-08-28 10:06:08
 GCC version: 4.9.3
 *****************************************/
 
@@ -291,7 +291,7 @@ void RNN::normalizeEmbedding(matrix<double>& embs) {
     if(embs.empty())
         return;
     for(auto& vec: embs) {
-        double sum;
+        double sum = 0;
         for(auto d: vec)
             sum += d * d;
         sum = sqrt(sum);
