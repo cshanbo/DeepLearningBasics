@@ -8,8 +8,14 @@ OBJ_DIR = obj
 BIN_DIR = bin
 UTIL_DIR = utils
 
-$(BIN_DIR)/test: $(OBJ_DIR)/CNN.o $(OBJ_DIR)/convolutionLayer.o $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/LR.o $(OBJ_DIR)/utils.o
+$(BIN_DIR)/test: | $(OBJ_DIR) $(BIN_DIR) $(OBJ_DIR)/CNN.o $(OBJ_DIR)/convolutionLayer.o $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/LR.o $(OBJ_DIR)/utils.o
 	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/test $(OBJ_DIR)/CNN.o $(OBJ_DIR)/convolutionLayer.o $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/LR.o $(OBJ_DIR)/utils.o
+
+$(OBJ_DIR): 
+	mkdir -p $(OBJ_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
 $(OBJ_DIR)/CNN.o: $(SRC_DIR)/CNN.cpp $(INC_DIR)/CNN.h $(INC_DIR)/convolutionLayer.h $(INC_DIR)/HiddenLayer.h $(INC_DIR)/LR.h $(INC_DIR)/utils.h
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/CNN.cpp -o $(OBJ_DIR)/CNN.o
@@ -26,6 +32,7 @@ $(OBJ_DIR)/LR.o: LR/LR.cpp $(INC_DIR)/LR.h
 $(OBJ_DIR)/utils.o: $(UTIL_DIR)/utils.cpp $(INC_DIR)/utils.h
 	$(CXX) $(CXXFLAGS) -c $(UTIL_DIR)/utils.cpp -o $(OBJ_DIR)/utils.o
 
+.PHONY: clean
 clean:
 	rm $(OBJ_DIR)/*
 	rm $(BIN_DIR)/*

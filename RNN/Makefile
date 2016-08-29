@@ -8,8 +8,14 @@ OBJ_DIR = obj
 BIN_DIR = bin
 UTIL_DIR = utils
 
-$(BIN_DIR)/test: $(OBJ_DIR)/RNN.o $(OBJ_DIR)/utils.o
-	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/test $(OBJ_DIR)/RNN.o $(OBJ_DIR)/utils.o
+$(BIN_DIR)/test: | $(OBJ_DIR) $(BIN_DIR) $(OBJ_DIR)/RNN.o $(OBJ_DIR)/utils.o
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/test $(OBJ_DIR)/RNN.o $(OBJ_DIR)/utils.o 
+
+$(OBJ_DIR): 
+	mkdir -p $(OBJ_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
 $(OBJ_DIR)/RNN.o: $(SRC_DIR)/RNN.cpp $(INC_DIR)/RNN.h $(INC_DIR)/utils.h
 	$(CXX) $(CXXFLAGS) -c $(SRC_DIR)/RNN.cpp -o $(OBJ_DIR)/RNN.o

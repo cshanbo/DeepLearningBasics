@@ -3,7 +3,7 @@ Program: Logistic Regression CPP
 Description: 
 Shanbo Cheng: cshanbo@gmail.com
 Date: 2016-07-19 16:11:48
-Last modified: 2016-08-19 15:35:21
+Last modified: 2016-08-29 14:10:07
 GCC version: 4.9.3
 */
 
@@ -156,9 +156,9 @@ vector<int> LogisticRegression::test(matrix<double> testSet, vector<int> y) {
 }*/
 
 
-int main() {
-
-}
+//int main() {
+//
+//}
 
 
 

@@ -10,8 +10,14 @@ OBJ_DIR = obj
 BIN_DIR = bin
 UTIL_DIR = utils
 
-$(BIN_DIR)/test: $(OBJ_DIR)/MLP.o $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/utils.o $(OBJ_DIR)/LR.o
+$(BIN_DIR)/test: |$(OBJ_DIR) $(BIN_DIR) $(OBJ_DIR)/MLP.o $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/utils.o $(OBJ_DIR)/LR.o
 	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/test $(OBJ_DIR)/MLP.o $(OBJ_DIR)/HiddenLayer.o $(OBJ_DIR)/utils.o $(OBJ_DIR)/LR.o
+
+$(OBJ_DIR): 
+	mkdir -p $(OBJ_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
 
 $(OBJ_DIR)/utils.o: $(UTIL_DIR)/utils.cpp $(INC_DIR)/utils.h
 	$(CXX) $(CXXFLAGS) -c $(UTIL_DIR)/utils.cpp -o $(OBJ_DIR)/utils.o
